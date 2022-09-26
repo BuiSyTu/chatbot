@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" style="width: 30rem;">
+    <div class="card-header">
+        <i class="fas fa-tenge"></i>
+        <input type="text" class="title">
+        <i class="fas fa-trash-alt pull-right" delete-form-card data-toggle="tooltip" title="Xóa card"></i>
+    </div>
+    <div class="card-body">
+        <div class="row card-content">
+            <textarea class="text-content" cols="55" rows="7"></textarea>
+            <button class="btn btn-outline-secondary w-100 mt-3" button-info>OK fine/abc</button>
+        </div>
+        <button class="btn btn-outline-secondary w-100 mt-3" add-button>Thêm nút</button>
+    </div>
+</div>
+
+<div class="modal button-info-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cấu hình nút</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="form-group">
+                        <label>Chức năng</label>
+                        <input type="email" class="form-control" aria-describedby="emailHelp"
+                            placeholder="Nhập chức năng">
+                    </div>
+                    <div class="form-group">
+                        <label>Tên</label>
+                        <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Tên">
+                    </div>
+                    <div class="form-group">
+                        <label>Hành động</label>
+                        <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Hành động">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" delete-button>Xóa</button>
+                <button type="button" class="btn btn-primary" update-button>Cập nhật</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal add-button-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cấu hình nút</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="form-group">
+                        <label>Chức năng</label>
+                        <input type="email" class="form-control" aria-describedby="emailHelp"
+                            placeholder="Nhập chức năng">
+                    </div>
+                    <div class="form-group">
+                        <label>Tên</label>
+                        <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Tên">
+                    </div>
+                    <div class="form-group">
+                        <label>Hành động</label>
+                        <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Hành động">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" update-button>Cập nhật</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+    input.title {
+        border: 0;
+        outline: 0;
+    }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+    var cur_button;
+    $('.card').on('click', '[add-button]', function() {
+        // $('.card-content').append(`
+        //     <button class="btn btn-outline-secondary w-100 mt-3" button-info>OK fine/cde</button>
+        // `);
+        $('.add-button-modal').modal();
+    })
+    .on('click', '[button-info]', function() {
+        cur_button = $(this);
+        $('.button-info-modal').modal();
+    })
+
+    $('.button-info-modal').on('click', '[delete-button]', function() {
+        if (confirm('Bạn có chắc muốn xóa nút này')) {
+            cur_button.remove();
+            $('.button-info-modal').modal('hide');
+        }
+    })
+    .on('click', '[update-button]', function(){
+        alert("Nhớ xử lý đấy :(")
+    })
+
+    function getConfig() {
+        var config = {
+            title: $('.title').val(),
+            text: $('.text-content').val()
+        };
+
+        var buttons = [];
+
+        var buttons_html = $('[button-info]');
+        var length = buttons_html.length;
+
+        for (var i = 0; i < length; i++) {
+            var button_info = $(buttons_html[i]).text();
+            var infos = button_info.split('/');
+
+            var button = {
+                step_id: infos[0],
+                name: infos[1]
+            }
+
+            buttons.push(button);
+        }
+
+        config.buttons = buttons;
+
+        return config;
+    }
+</script>
+{% endblock %}

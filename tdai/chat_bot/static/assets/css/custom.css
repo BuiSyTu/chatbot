@@ -1,0 +1,15 @@
+.bot-card-body {
+    padding:2.25rem; text-align: center
+}
+
+.bot-card-text {
+    font-size: 15px;
+}
+
+.bot-card-header{
+    font-size: 18px;
+}
+
+.bot-card:hover {
+    border-color: #007bff;
+}

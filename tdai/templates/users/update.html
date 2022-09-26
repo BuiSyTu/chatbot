@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- begin:: Page -->
+        {% include 'components/header_mobile.html' %}
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                    {% include 'components/aside.html' %}
+				<!-- end:: Aside -->
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                        {% include 'components/header.html' %}
+					<!-- end:: Header -->
+
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+                        <div class="kt-subheader  kt-grid__item" id="kt_subheader">
+                            <div class="kt-container  kt-container--fluid ">
+                                <div class="kt-subheader__main">
+                                    <h3 class="kt-subheader__title">Sửa tài khoản</h3>
+
+                                </div>
+                                <div class="kt-subheader__toolbar">
+                                    <div class="kt-subheader__wrapper">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <form id="user_detail_form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label>Tài khoản</label>
+                                        <input type="text" class="form-control username" name="username" placeholder="Tài khoản" disabled value="{{ user.username }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mật khẩu</label>
+                                        <input type="password" class="form-control password" name="password" placeholder="Mật khẩu" required value="{{ user.password }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control email" name="email" placeholder="Email" required value="{{ user.email }}">
+                                    </div>
+                                    <div class="kt-portlet__foot">
+                                        <div class="kt-form__actions">
+                                            <button type="button" class="btn btn-primary" btn-save data-id="{{ user.id }}">Lưu</button>
+                                            <button type="button" class="btn btn-secondary" btn-back>Trở về</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+
+					</div>
+
+                    <!-- begin:: Footer -->
+                        {% include 'components/footer.html' %}
+                    <!-- end:: Footer -->
+				</div>
+			</div>
+		</div>
+    <!-- end:: Page -->
+{% endblock %}
+{% block script %}
+   <script type="application/javascript">
+        $('#user_detail_form').on('keyup keypress', function(e) {
+          let keyCode = e.keyCode || e.which;
+          if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+          }
+        })
+        .on('click', '[btn-back]', function() {
+            window.history.back();
+        })
+        .on('click', '[btn-save]', function() {
+            const id = $(this).attr('data-id');
+            const username =  $('.username').val();
+            const password =  $('.password').val();
+            const email = $('.email').val();
+            $.ajax({
+                url :`/api/users/${id}`,
+                type : 'PUT',
+                contentType: 'application/json',
+                data : JSON.stringify({
+                    username,
+                    password,
+                    email
+                }),
+                success : function (response) {
+                    alert("Thành công");
+                    location.reload();
+                }
+            });
+        })
+    </script>
+{% endblock %}
+
+

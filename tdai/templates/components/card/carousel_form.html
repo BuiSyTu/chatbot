@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card-header">
+  <p class="card-title">
+    <i class="far fa-window-maximize"></i>
+    <input type="text" class="input-title" value="New carousel card">
+    <i class="fas fa-trash-alt pull-right" delete-form-card data-toggle="tooltip" title="Xóa card"></i>
+  </p>
+</div>
+
+<div class="card" style="width: 100%; display: flex; flex-direction: row;">
+  <div class="dm-carousel" style="width: 20%; margin-right: 10px; margin-top: 10px; margin-left: 10px;">
+    <div class="row" style="padding: 0px; width: 100%; margin: 0px;">
+      <div class="carousel-move-areal"><i class="icon-swap-horizontal"></i></div>
+      <div class=" carousel-title" style="width: 100%; background-color: white;">
+        <input class="input-title" style="border: none; padding:10px; height: 100%; width: 85%;" value="New carousel">
+        <button type="button" title="Xóa Slide ảnh" class="dm-carousel-btn-action dm-carousel-button-delete" delete-variable>
+          <i class="fas fa-trash-alt pull-right"></i></button>
+      </div>
+      <div class="col-lg-12 carousel-img" style="padding: 0;">
+        <div class="dm-carousel-img" style="cursor: pointer;"><img
+            src="https://bot.fpt.ai/static-v35/fptai/img/default-image.png"></div>
+      </div>
+      <div class="col-lg-12 carousel-content" style="padding: 0;"><textarea style="padding:   5px;" rows="3"
+          maxlength="80" placeholder="Tiêu đề phụ <tối đa 80 kí tự>"></textarea></div>
+      <div class="col-lg-12 carousel-button-add" style="padding: 0;"><button type="button" class="btn"
+          data-msgid="+ Button" data-current-language="vi" data-target="#myModal" data-toggle="modal">+ Nút</button></div>
+    </div>
+  </div>
+</div>
+<div class="col-12 text-center add-button">
+  <button class="btn btn-outline-success w-50" add-variable style="margin-top:  20px;">Thêm biến</button>
+</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="flex-direction: row;">
+        <h3>Cấu hình nút</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" style="float: left; align-content: center;">Sao chép từ các nút có sẵn </button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary">Tạo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block style %}
+<style>
+  .input-left {
+    padding-right: 5px;
+    padding-top: 0;
+    margin-bottom: 5px;
+    width: 100px;
+  }
+
+  .card {
+    background-color: transparent;
+  }
+
+  .input-right {
+    padding-left: 5px;
+    padding-top: 0;
+    margin-bottom: 5px;
+  }
+
+  .input-title {
+    border: 0;
+    outline: 0;
+  }
+
+  i.trash-item {
+    margin-top: 4px;
+  }
+
+  i.trash-item:hover {
+    opacity: 0;
+  }
+
+  .dm-carousel-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  img {
+    vertical-align: middle;
+    border-style: none;
+  }
+
+  .col-lg-12 .carousel-img {
+    padding: 0;
+  }
+
+  .dm-carousel-button-delete {
+    position: relative;
+    left: -6px;
+    font-size: 20px;
+    top: -6px;
+    background-color: white;
+    border: white;
+    border-radius: 4px;
+  }
+
+  .dm-carousel textarea {
+    width: 100%;
+    font-size: 13px;
+    resize: none;
+    /* border: none; */
+    background-color: white;
+    overflow: hidden;
+    outline: none;
+    box-shadow: none;
+    padding: 10px;
+    border: 1px solid #DEE2E6;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    height: 100%;
+  }
+
+
+  .dm-carousel .carousel-button-add button {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px dashed #DEE2E6;
+    border-radius: 0 0 4px 4px;
+    background-color: #FFFFFF;
+    height: 35px;
+    font-size: 14px;
+  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+  $('.add-button').on('click', '[add-variable]', function () {
+    $('.card').append(`
+    <div class="dm-carousel" style="width: 20%; margin-right: 10px; margin-top: 10px; margin-left: 10px;">
+    <div class="row" style="padding: 0px; width: 100%; margin: 0px;">
+      <div class="carousel-move-areal"><i class="icon-swap-horizontal"></i></div>
+      <div class=" carousel-title" style="width: 100%; background-color: white;">
+        <input class="input-title" style="border: none; padding:10px; height: 100%; width: 85%;" value="New carousel">
+        <button type="button" title="Xóa Slide ảnh" class="dm-carousel-btn-action dm-carousel-button-delete"
+          delete-variable>
+          <i class="fas fa-trash-alt pull-right" data-toggle="tooltip"></i></button>
+      </div>
+      <div class="col-lg-12 carousel-img" style="padding: 0;">
+        <div class="dm-carousel-img" style="cursor: pointer;"><img
+            src="https://bot.fpt.ai/static-v35/fptai/img/default-image.png"></div>
+      </div>
+      <div class="col-lg-12 carousel-content" style="padding: 0;"><textarea style="padding:   5px;" rows="3"
+          maxlength="80" placeholder="Tiêu đề phụ <tối đa 80 kí tự>"></textarea></div>
+      <div class="col-lg-12 carousel-button-add" style="padding: 0;"><button type="button" class="btn"
+          data-msgid="+ Button" data-current-language="vi">+ Nút</button></div>
+    </div>
+  </div>
+        `);
+  })
+  $('.dm-carousel-button-delete').on('click', '[delete-variable]', function () {
+    $(this).parent().parent().remove();
+  })
+  .on('click', '[delete-form-card]', function () {
+    if (confirm('Bạn có chắc muốn xóa card này')) {
+      $(this).parent().parent().parent().remove();
+    }
+  })
+
+  function getConfig() {
+    var config = {
+      title: $('.input-title').val()
+    };
+
+    var questions = [];
+    var variables_html = $('.variable');
+    var questions_html = $('.question');
+    var re_questions_html = $('.re-question');
+    var length = variables_html.length;
+
+
+    for (var i = 0; i < length; i++) {
+      var question = {
+        variable_id: $(variables_html[i]).val(),
+        question: $(questions_html[i]).val(),
+        re_question: $(re_questions_html[i]).val(),
+      }
+
+      questions.push(question);
+    }
+
+    config.questions = questions;
+    return config;
+  }
+</script>
+{% endblock %}

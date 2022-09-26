@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- begin:: Page -->
+        {% include 'components/header_mobile.html' %}
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                    {% include 'components/aside.html' %}
+				<!-- end:: Aside -->
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                        {% include 'components/header.html' %}
+					<!-- end:: Header -->
+
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+                        <div class="kt-subheader  kt-grid__item" id="kt_subheader">
+                            <div class="kt-container  kt-container--fluid ">
+                                <div class="kt-subheader__main">
+                                    <h3 class="kt-subheader__title">Thêm bước</h3>
+                                </div>
+                                <div class="kt-subheader__toolbar">
+                                    <div class="kt-subheader__wrapper">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <form id="add_step_form" action="/add_steps/" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group ">
+                                        <label>Tên bước</label>
+                                        <input type="text" class="form-control name" name="name" placeholder="Nội dung" required>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label>Thứ tự</label>
+                                        <input type="number" class="form-control position" name="position" required>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label>Nhóm bước</label>
+                                            <div class="form-group-sub">
+                                                <select class="form-control scenario_id" name="scenario_id">
+                                                    <option disabled selected value> Vui long chọn một tùy chọn </option>
+                                                    {% for scenario in scenarios %}
+                                                    <option value="{{ scenario.id }}">
+                                                        {{ scenario.name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div class="kt-portlet__foot">
+                                        <div class="kt-form__actions">
+                                            <button type="button" class="btn btn-primary" btn-add>Xác nhận</button>
+                                            <button type="button" class="btn btn-secondary" btn-back>Trở về</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+
+					</div>
+
+                    <!-- begin:: Footer -->
+                        {% include 'components/footer.html' %}
+                    <!-- end:: Footer -->
+				</div>
+			</div>
+		</div>
+    <!-- end:: Page -->
+{% endblock%}
+{% block script %}
+    <script type="application/javascript">
+        $(document).ready(function() {
+        });
+
+        $('#add_step_form').on('keyup keypress', function(e) {
+          let keyCode = e.keyCode || e.which;
+          if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+          }
+        })
+        .on('click', '[btn-back]', function() {
+            window.history.back();
+        })
+        .on('click', '[btn-add]', function() {
+            const name = $('.name').val();
+            const position = $('.position').val();
+            const scenario_id = $('.scenario_id').val();
+
+
+            if (!scenario_id) {
+                toastr.info('Bạn chưa chọn ý định cho câu');
+            } else {
+                $.ajax({
+                    url : `/api/steps`,
+                    type : 'post',
+                    contentType: 'application/json',
+                    data : JSON.stringify({
+                        name,
+                        position,
+                        scenario_id
+                    }),
+                    success : function (response) {
+                        toastr.success("Thêm thành công");
+                        emptyInputs();
+                    }
+                });
+            }
+        });
+
+        function emptyInputs() {
+            $('.name').val('');
+            $('.position').val('');
+            $('.scenario_id').val('');
+        }
+    </script>
+{% endblock%}
+
+
+
+

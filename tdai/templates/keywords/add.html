@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- begin:: Page -->
+        {% include 'components/header_mobile.html' %}
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                    {% include 'components/aside.html' %}
+				<!-- end:: Aside -->
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                        {% include 'components/header.html' %}
+					<!-- end:: Header -->
+
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+                        <div class="kt-subheader  kt-grid__item" id="kt_subheader">
+                            <div class="kt-container  kt-container--fluid ">
+                                <div class="kt-subheader__main">
+                                    <h3 class="kt-subheader__title">Thêm từ khóa</h3>
+
+                                </div>
+                                <div class="kt-subheader__toolbar">
+                                    <div class="kt-subheader__wrapper">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <form id="add_keyword_form" action="/add_key_words/" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="text" class="form-control keyword" name="keyword" placeholder="Từ khóa" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control synonym" name="synonym" placeholder="Từ đồng nghĩa" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Loại thực thể</label>
+                                            <div class="form-group-sub">
+                                                <select class="form-control entity_id" name="entity_id">
+                                                    <option disabled selected value> Vui lòng chọn một tùy chọn </option>
+                                                    {% for entity in entities %}
+                                                    <option value="{{ entity.id }}">
+                                                        {{ entity.entity }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div class="kt-portlet__foot">
+                                        <div class="kt-form__actions">
+                                            <button type="button" class="btn btn-primary" btn-add>Xác nhận</button>
+                                            <button type="button" class="btn btn-secondary" btn-back>Trở về</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+
+					</div>
+
+                    <!-- begin:: Footer -->
+                        {% include 'components/footer.html' %}
+                    <!-- end:: Footer -->
+				</div>
+			</div>
+		</div>
+    <!-- end:: Page -->
+{% endblock %}
+{% block script %}
+    <script type="application/javascript">
+        $('#add_keyword_form').on('keyup keypress', function(e) {
+          let keyCode = e.keyCode || e.which;
+          if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+          }
+        })
+        .on('click', '[btn-back]', function() {
+            window.history.back();
+        })
+        .on('click', '[btn-add]', function() {
+            let keyword =  $('.keyword').val();
+            let synonym = $('.synonym').val();
+            let entity_id = $('.entity_id').val();
+
+            if (!entity_id) {
+                alert('Chưa có loại thực thể');
+            } else {
+                let check = true;
+                let existed_keywords = {{ keywords|safe }};
+                for (let i=0; i<existed_keywords.length; i++){
+                    if (keyword == existed_keywords[i].keyword) {
+                        check = false;
+                        break;
+                    }
+                }
+                if (check) {
+                    $.ajax({
+                        url : `/api/keywords`,
+                        type : 'post',
+                        contentType: "application/json",
+                        data : JSON.stringify({
+                            keyword,
+                            synonym,
+                            entity_id
+                        }),
+                        success : function (response) {
+                            alert("Thêm thành công");
+                            location.reload()
+                        }
+                    });
+                } else {
+                    alert("Đã tồn tại");
+                }
+            }
+        })
+    </script>
+{% endblock %}
+
+

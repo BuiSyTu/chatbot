@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- begin:: Page -->
+        {% include 'components/header_mobile.html' %}
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                    {% include 'components/aside.html' %}
+				<!-- end:: Aside -->
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                        {% include 'components/header.html' %}
+					<!-- end:: Header -->
+
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+						<!-- begin:: Content Head -->
+                            {% include 'bots/content_head.html' %}
+						<!-- end:: Content Head -->
+
+                        <!-- begin:: Content -->
+                            {% include 'bots/content.html' %}
+                        <!-- end:: Content -->
+					</div>
+
+                    <!-- begin:: Footer -->
+                        {% include 'components/footer.html' %}
+                    <!-- end:: Footer -->
+				</div>
+			</div>
+		</div>
+    <!-- end:: Page -->
+{% endblock %}
+{% block script %}
+	<script type='text/javascript'>
+		$(document).on('click', '[btn-delete]', function () {
+			const id = $(this).attr('data-id');
+			if (confirm("Bạn có chắc muốn xóa mục này")) {
+				$.ajax({
+					url: `/api/bots/${id}`,
+					type: 'delete',
+					success: function (response) {
+						alert('Thành công');
+						location.reload();
+					}
+				})
+			}
+
+			$('.card.col-4.bot-card').on('click', function() {
+				
+			});
+		})
+	</script>
+{% endblock %}
+
+

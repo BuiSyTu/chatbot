@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="modal fade-  show" id="kt_chat_modal" role="dialog" data-backdrop="false" aria-modal="true" style="padding-right: 17px; display: block;">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="kt-chat">
+						<div class="kt-portlet kt-portlet--last">
+							<div class="kt-portlet__head">
+								<div class="kt-chat__head ">
+									<div class="kt-chat__left">
+										<div class="kt-chat__label">
+											<a href="#" class="kt-chat__title">TanDan Jsc</a>
+											<span class="kt-chat__status">
+												<span class="kt-badge kt-badge--dot kt-badge--success"></span> Active
+											</span>
+										</div>
+									</div>
+									<div class="kt-chat__right">
+										<div class="dropdown dropdown-inline">
+											<button type="button" class="btn btn-clean btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<i class="flaticon-more-1"></i>
+											</button>
+											<div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-md">
+
+												<!--begin::Nav-->
+												<ul class="kt-nav">
+													<li class="kt-nav__head">
+														Messaging
+														<i class="flaticon2-information" data-toggle="kt-tooltip" data-placement="right" title="" data-original-title="Click to learn more..."></i>
+													</li>
+													<li class="kt-nav__separator"></li>
+													<li class="kt-nav__item">
+														<a href="#" class="kt-nav__link">
+															<i class="kt-nav__link-icon flaticon2-group"></i>
+															<span class="kt-nav__link-text">New Group</span>
+														</a>
+													</li>
+													<li class="kt-nav__item">
+														<a href="#" class="kt-nav__link">
+															<i class="kt-nav__link-icon flaticon2-open-text-book"></i>
+															<span class="kt-nav__link-text">Contacts</span>
+															<span class="kt-nav__link-badge">
+																<span class="kt-badge kt-badge--brand  kt-badge--rounded-">5</span>
+															</span>
+														</a>
+													</li>
+													<li class="kt-nav__item">
+														<a href="#" class="kt-nav__link">
+															<i class="kt-nav__link-icon flaticon2-bell-2"></i>
+															<span class="kt-nav__link-text">Calls</span>
+														</a>
+													</li>
+													<li class="kt-nav__item">
+														<a href="#" class="kt-nav__link">
+															<i class="kt-nav__link-icon flaticon2-dashboard"></i>
+															<span class="kt-nav__link-text">Settings</span>
+														</a>
+													</li>
+													<li class="kt-nav__item">
+														<a href="#" class="kt-nav__link">
+															<i class="kt-nav__link-icon flaticon2-protected"></i>
+															<span class="kt-nav__link-text">Help</span>
+														</a>
+													</li>
+													<li class="kt-nav__separator"></li>
+													<li class="kt-nav__foot">
+														<a class="btn btn-label-brand btn-bold btn-sm" href="#">Upgrade plan</a>
+														<a class="btn btn-clean btn-bold btn-sm" href="#" data-toggle="kt-tooltip" data-placement="right" title="" data-original-title="Click to learn more...">Learn more</a>
+													</li>
+												</ul>
+
+												<!--end::Nav-->
+											</div>
+										</div>
+										<button type="button" class="btn btn-clean btn-sm btn-icon" data-dismiss="modal">
+											<i class="flaticon2-cross"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="kt-portlet__body">
+								<div class="kt-scroll kt-scroll--pull ps ps--active-y" data-height="410" data-mobile-height="225" style="height: 410px; overflow: hidden;">
+									<div class="kt-chat__messages kt-chat__messages--so   lid">
+
+									</div>
+								<div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: -2px; height: 410px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 142px;"></div></div></div>
+							</div>
+							<div class="kt-portlet__foot">
+								<div class="kt-chat__input">
+									<div class="kt-chat__editor">
+										<textarea id="chat_input" placeholder="Type here..." style="height: 50px"></textarea>
+									</div>
+									<div class="kt-chat__toolbar">
+										<div class="kt_chat__tools">
+											<a href="#"><i class="flaticon2-link"></i></a>
+											<a href="#"><i class="flaticon2-photograph"></i></a>
+											<a href="#"><i class="flaticon2-photo-camera"></i></a>
+										</div>
+										<div class="kt_chat__actions">
+											<button type="button" class="btn btn-brand btn-md  btn-font-sm btn-upper btn-bold kt-chat__reply">reply</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+{% endblock %}
+
+

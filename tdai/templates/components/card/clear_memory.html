@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dm-card-content" style="opacity: 1;">
+
+    <i class="fas fa-indent" style="padding-left: 10px;"></i> <input class="dm-card-title" value="Clear Memory">
+    <!---->
+    <div class="row" style="padding-bottom: 10px; padding-left: 10px; margin-top: 20px;">
+        <div class="col-lg-12" style="margin-bottom: 5px; display: flex;"><input type="checkbox"
+                id="opt_clear_all_qc0wuhlefbzl78zpocpf7qn9wleyotci" class="checkbox-template"> <label
+                for="opt_clear_all_qc0wuhlefbzl78zpocpf7qn9wleyotci" data-msgid="Clear All Variable"
+                style="margin-left: 10px;" data-current-language="vi">Xóa tất cả biến</label></div>
+        <div class="col-lg-12 d-flex justify-content-between" style="margin-bottom: 5px;"><span
+                data-msgid="Clear selected variables" data-current-language="vi">Xóa tùy chọn biến</span> <button
+                type="button" class="btn" data-target="#myModal" data-toggle="modal" data-msgid="+ Button"
+                data-current-language="vi" title="Chọn biến" class="icon-btn"
+                style="border:none; margin-right: 10px; border-radius: 10px;"><i class="fas fa-pen"></i></button></div>
+        <div class="col-lg-12" style="padding-right: 10px;  margin-right: 10px;"><input type="text"
+                placeholder="Chọn biến..." disabled="disabled" class="form-control">
+        </div>
+    </div>
+    <div class="row" style="padding-bottom: 10px;" id="addlist">
+        <div class="col-lg-12"><span data-msgid="Set variables:" data-current-language="vi"
+                style="margin-bottom: 5px; margin-left: 10px ;">Đặt biến:</span></div>
+        <div class="col-lg-12" id="add"><button class="icon-btn"
+                style="border: none; margin-left: 10px; border-radius: 12px; margin-top: 2px;"><i class="fas fa-plus"
+                    add-variable></i></button></div>
+    </div>
+</div>
+<button id="menu" type="button" data-toggle="dropdown" aria-haspopup="true"
+    aria-expanded="false" class="icon-btn dm-card-btn-menu"><i class="fas fa-ellipsis-v"></i>
+</button>
+
+<div id = "drop_menu">
+    <ul class="dropdown-menu dropdown-menu-right show" x-placement="left-start"
+    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-226px, -1px, 0px);">
+        <li><i class="icon-help"></i> Trợ giúp</li>
+        <li><i class="icon-plus"></i> Thêm điều kiện</li>
+        <li><i class="icon-content-copy"></i> Sao chép</li>
+        <li><i class="icon-border-style "></i> Vô hiệu hóa Thẻ</li>
+        <li><i class="icon-trash"></i> Xóa thẻ</li>
+        </ul>
+</div>
+
+<!---Modal-->
+
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 id="blockModalLabel" class="modal-title" data-msgid="Select variables" data-current-language="vi">Chọn
+                biến</h4> <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
+                    aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+            <div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_0" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_0">sender_id</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_1" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_1">sender_name</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_2" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_2">channel</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_3" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_3">sender_input</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_4" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_4">nlp_predict</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_5" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_5">link_url</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_6" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_6">location_latitude</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_7" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_7">location_longitude</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_8" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_8">currency</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_9" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_9">transfer_toaccount</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_10" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_10">transfer_amount</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_11" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_11">transfer_otp</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_12" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_12">topup_phone</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_13" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_13">topup_amount</label></div>
+                <div style="margin-bottom: 5px; padding: 0px 20px 0px 0px; float: left;"><input type="checkbox"
+                        id="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_14" class="checkbox-template"> <label
+                        for="chk_memory_qc0wuhlefbzl78zpocpf7qn9wleyotci_14">otp</label></div>
+            </div>
+        </div>
+        <div class="modal-footer"><button type="button" data-dismiss="modal" class="btn btn-secondary"
+                data-msgid="Close" data-current-language="vi">Đóng</button> <button type="button"
+                class="btn btn-primary" data-msgid="Accept" data-current-language="vi">Đồng ý</button></div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block style %}
+<style>
+    .dm-card-content {
+        margin-left: 0%;
+        margin-top: 0%;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        padding: 0px 0 0px 0;
+        background-color: #fff;
+        
+        /* opacity: 0.5; */
+    }
+
+    .dm-card-icon {
+        position: absolute;
+        left: 13px;
+        font-size: 22px;
+        padding: 10px;
+    }
+
+    .dm-event input:not(.multiselect__input) {
+        border: 1px solid #DEE2E6;
+    }
+
+    .dm-card-title {
+        margin-left: 4px;
+        width: calc(100% - 110px);
+        background-color: transparent;
+        border: 1px solid transparent !important;
+        /* text-decoration: underline; */
+        font-weight: 100;
+        font-size: 16px;
+    }
+    .dm-card-btn-menu {
+    position: absolute;
+    top: -4px;
+    right: 11px;
+    width: 45px;
+    height: 45px;
+    border: none;
+    margin-top: 12px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    
+    /* border: 1px solid #d3d3d3; */
+    /* border-radius: 50%; */
+    color: #7C909A;
+    size: 23px;
+    /* display: none; */
+    /* box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05); */
+    }
+    .dropdown-menu.show {
+    display: block;
+}
+</style>
+{% endblock %}
+
+{% block script %}
+<script>
+    $('#addlist').on('click', '[add-variable]', function () {
+        $('#add').append(`
+        <div class="row" style="padding-bottom: 10px; margin :10px";position: absolutely;>
+        <div class="col-lg-12" style="justify-content: space-between; display: flex; margin-bottom: 5px;"><select
+            class="form-control check-disabled" style="width: 30%; float: left; margin: 0px;">
+            <option value="" selected="selected" disabled="disabled">Select Variable</option>
+            <!---->
+            <!---->
+            <!---->
+            <!---->
+            <!---->
+            <!---->
+            <!---->
+            <!---->
+            <option value="currency">currency</option>
+            <option value="transfer_toaccount">transfer_toaccount</option>
+            <option value="transfer_amount">transfer_amount</option>
+            <option value="transfer_otp">transfer_otp</option>
+            <option value="topup_phone">topup_phone</option>
+            <option value="topup_amount">topup_amount</option>
+            <option value="otp">otp</option>
+        </select> <input placeholder="Value" disabled="disabled" class="form-control" style="width: 60%; float: left;">
+        <button class="dm-icon-button" style="float: left; border :none"><i class="fas fa-trash" delete-variable></i></button></div>
+        </div>
+        `);
+    })
+        .on('click', '[delete-variable]', function () {
+            $(this).parent().parent().parent().remove();
+        })
+
+    function addvalue() {
+
+    }
+
+    $(document).ready(function(){
+        // Show hide popover
+        $(".menu").click(function(){
+            $(this).find(".drop_menu").slideToggle("fast");
+        });
+    });
+    $(document).on("click", function(event){
+        var $trigger = $(".menu");
+        if($trigger !== event.target && !$trigger.has(event.target).length){
+            $(".drop_menu").slideUp("fast");
+        }            
+    });
+</script>
+{% endblock %}

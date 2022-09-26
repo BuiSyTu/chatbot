@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- begin:: Page -->
+        {% include 'components/header_mobile.html' %}
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                    {% include 'components/aside.html' %}
+				<!-- end:: Aside -->
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                        {% include 'components/header.html' %}
+					<!-- end:: Header -->
+
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+                        <div class="kt-subheader  kt-grid__item" id="kt_subheader">
+                            <div class="kt-container  kt-container--fluid ">
+                                <div class="kt-subheader__main">
+                                    <h3 class="kt-subheader__title">Thêm câu mẫu</h3>
+
+                                </div>
+                                <div class="kt-subheader__toolbar">
+                                    <div class="kt-subheader__wrapper">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <form id="add_sentence_form" action="/add_sentences/" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label>Nội dung câu mẫu</label>
+                                        <input type="text" class="form-control sentence" name="sentence" placeholder="Nội dung" required="required">
+                                    </div>
+                                    <!-- <div class="form-group">
+                                        <label class="checkbox">
+                                            <input type="checkbox" name="use-template">
+                                            <span></span>Sử dụng template</label>
+                                    </div> -->
+                                    <div class="form-group">
+                                        <label>Ý định</label>
+                                            <div class="form-group-sub">
+                                                <select class="form-control intent_id" name="intent_id">
+                                                    <option disabled selected value> Vui lòng chọn một tùy chọn </option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div class="kt-portlet__foot">
+                                        <div class="kt-form__actions">
+                                            <button btn-add type="button" class="btn btn-primary">Xác nhận</button>
+                                            <button btn-back type="button" class="btn btn-secondary">Trở về</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+
+					</div>
+
+                    <!-- begin:: Footer -->
+                        {% include 'components/footer.html' %}
+                    <!-- end:: Footer -->
+				</div>
+			</div>
+		</div>
+    <!-- end:: Page -->
+{% endblock %}
+{% block script %}
+    <script type="application/javascript">
+        $(document).ready(function() {
+            $.ajax({
+                type: 'GET',
+                url:'/api/intents',
+                success: function(res) {
+                    res = res.sort((a, b) => a.intent.localeCompare(b.intent))
+                    let options = [];
+                    res.forEach((item, i) => options[i] = `<option value=${item.id}>${item.intent}</option>`);
+                    $('[name="intent_id"]').append(options.join(''));
+                }
+            })
+        })
+
+        $('#add_sentence_form').on('keyup keypress', function(e) {
+          let keyCode = e.keyCode || e.which;
+          if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+          }
+        })
+        .on('click', '[btn-back]', function(e) {
+            window.history.back();
+        })
+        .on('click', '[btn-add]', function(e) {
+            let sentence =  $(".sentence").val();
+            let intent_id = $(".intent_id").val();
+            if (!intent_id) {
+                toastr.info("Bạn chưa chọn ý định cho câu");
+            } else {
+                let check = true;
+                let existed_sentences = {{ sentences | safe}};
+                for (let i=0; i<existed_sentences.length; i++) {
+                    if (sentence == existed_sentences[i].sentence) {
+                        check = false;
+                        break;
+                    }
+                }
+                if (check) {
+                    $.ajax({
+                        url : `${location}/api/sentences`,
+                        type : "post",
+                        contentType: "application/json",
+                        data : JSON.stringify(
+                            {
+                                sentence,
+                                intent_id
+                            }
+                        ),
+                        success : function (response) {
+                            toastr.success("Thêm thành công");
+                            emptyInputs();
+                        }
+                    });
+                } else {
+                    toastr.info("Đã tồn tại");
+                }
+            }
+        })
+
+    function emptyInputs() {
+        $(".sentence").val('');
+        // $(".intent_id").val();
+    }
+    </script>
+{% endblock %}
+
+

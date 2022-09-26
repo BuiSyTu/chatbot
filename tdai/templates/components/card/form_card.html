@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" style="width: 30rem;">
+    <div class="card-header">
+        <p class="card-title">
+            <i class="far fa-window-maximize"></i>
+            <input type="text" class="input-title">
+            <i class="fas fa-trash-alt pull-right" delete-form-card data-toggle="tooltip" title="Xóa card"></i>
+        </p>
+    </div>
+    <div class="card-body">
+        <div class="row card-content">
+            <!-- Tiêu đề  -->
+            <div class="col-4">
+                <p>Biến</p>
+            </div>
+            <div class="col-7">
+                <p>Tin nhắn cho người dùng</p>
+            </div>
+            <div class="col-1">
+            </div>
+            <!-- End Tiêu đề -->
+
+            <div class="row col-12">
+                <!-- Câu trả lời  -->
+                <div class="col-4">
+                    <input type="text" class="input-left variable">
+                </div>
+                <div class="col-7">
+                    <input type="text" class="input-right question">
+                </div>
+                <div class="col-1">
+                    <i class="fas fa-trash-alt pull-right trash-iten" delete-variable data-toggle="tooltip" title="Xóa biến"></i>
+                </div>
+                <!-- End Câu trả lời -->
+
+                <!-- Câu trả lời thay thê -->
+                <div class="col-4">
+                </div>
+                <div class="col-7">
+                    <input type="text" class="input-right re-question">
+                </div>
+                <div class="col-1">
+                </div>
+                <!-- End Câu trả lời thay thế -->
+            </div>
+        </div>
+
+        <div class="col-12 text-center">
+            <button class="btn btn-outline-success w-100" add-variable>Thêm biến</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+    .input-left {
+        padding-right: 5px;
+        padding-top: 0;
+        margin-bottom: 5px;
+        width: 100px;
+    }
+
+    .input-right {
+        padding-left: 5px;
+        padding-top: 0;
+        margin-bottom: 5px;
+    }
+
+    .input-title {
+        border:0;
+        outline:0;
+    }
+
+    i.trash-item {
+        margin-top: 4px;
+    }
+
+    i.trash-item:hover {
+        opacity: 0;
+    }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+    $('.card').on('click', '[add-variable]',function(){
+        $('.card-content').append(`
+        <!-- Câu trả lời  -->
+        <div class="row col-12">
+                <!-- Câu trả lời  -->
+                <div class="col-4">
+                    <input type="text" class="input-left variable">
+                </div>
+                <div class="col-7">
+                    <input type="text" class="input-right question">
+                </div>
+                <div class="col-1">
+                    <i class="fas fa-trash-alt pull-right trash-iten" delete-variable data-toggle="tooltip" title="Xóa biến"></i>
+                </div>
+                <!-- End Câu trả lời -->
+
+                <!-- Câu trả lời thay thê -->
+                <div class="col-4">
+                </div>
+                <div class="col-7">
+                    <input type="text" class="input-right re-question">
+                </div>
+                <div class="col-1">
+                </div>
+                <!-- End Câu trả lời thay thế -->
+            </div>
+        `);
+    })
+    .on('click', '[delete-variable]', function() {
+        $(this).parent().parent().remove();
+    })
+    .on('click', '[delete-form-card]', function(){
+        if (confirm('Bạn có chắc muốn xóa card này')) {
+            $(this).parent().parent().parent().remove();
+        }
+    })
+
+    function getConfig() {
+        var config = {
+            title: $('.input-title').val()
+        };
+
+        var questions = [];
+        var variables_html = $('.variable');
+        var questions_html = $('.question');
+        var re_questions_html = $('.re-question');
+        var length = variables_html.length;
+        
+
+        for (var i = 0; i < length; i++) {
+            var question = {
+                variable_id: $(variables_html[i]).val(),
+                question: $(questions_html[i]).val(),
+                re_question: $(re_questions_html[i]).val(),
+            } 
+
+            questions.push(question);
+        }
+
+        config.questions = questions;
+        return config;
+    }
+</script>
+{% endblock %}

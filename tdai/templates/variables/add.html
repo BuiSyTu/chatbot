@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- begin:: Page -->
+        {% include 'components/header_mobile.html' %}
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                    {% include 'components/aside.html' %}
+				<!-- end:: Aside -->
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                        {% include 'components/header.html' %}
+					<!-- end:: Header -->
+
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+                        <div class="kt-subheader  kt-grid__item" id="kt_subheader">
+                            <div class="kt-container  kt-container--fluid ">
+                                <div class="kt-subheader__main">
+                                    <h3 class="kt-subheader__title">Thêm biến</h3>
+
+                                </div>
+                                <div class="kt-subheader__toolbar">
+                                    <div class="kt-subheader__wrapper">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <form id="add_variable_form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="text" class="form-control name" name="name" placeholder="Tên biến" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Loại biến</label>
+                                        <div class="form-group-sub">
+                                            <select name="variable_type" id="variable_type" class="form-control">
+                                                <option value="String">String</option>
+                                                <option value="Number">Number</option>
+                                                <option value="Phone">Phone</option>
+                                                <option value="Email">Email</option>
+                                            </select>
+                                        </div>
+    
+                                    </div>
+                                    <div class="kt-portlet__foot">
+                                        <div class="kt-form__actions">
+                                            <button type="button" class="btn btn-primary" btn-add>Xác nhận</button>
+                                            <button type="button" class="btn btn-secondary" btn-back>Trở về</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+					</div>
+
+                    <!-- begin:: Footer -->
+                        {% include 'components/footer.html' %}
+                    <!-- end:: Footer -->
+				</div>
+			</div>
+		</div>
+    <!-- end:: Page -->
+{% endblock %}
+{% block script %}
+    <script type="application/javascript">
+        $('#add_variable_form').on('keyup keypress', function(e) {
+          let keyCode = e.keyCode || e.which;
+          if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+          }
+        })
+        .on('click', '[btn-back]', function() {
+            window.history.back();
+        })
+        .on('click', '[btn-add]', function() {
+            const name =  $('.name').val();
+            const variable_type = $('.variable_type').val();
+            $.ajax({
+                url : '/api/variables',
+                type : 'post',
+                contentType: 'application/json',
+                data : JSON.stringify({
+                    name,
+                    variable_type
+                }),
+                success : function (response) {
+                    alert('Thêm thành công');
+                    location.reload()
+                }
+            });
+        })
+    </script>
+{% endblock %}
+
+

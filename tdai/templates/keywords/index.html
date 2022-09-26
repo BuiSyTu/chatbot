@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- begin:: Page -->
+        {% include 'components/header_mobile.html' %}
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                    {% include 'components/aside.html' %}
+				<!-- end:: Aside -->
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                        {% include 'components/header.html' %}
+					<!-- end:: Header -->
+
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+						<!-- begin:: Content Head -->
+                            {% include 'keywords/content_head.html' %}
+						<!-- end:: Content Head -->
+
+                        <!-- begin:: Content -->
+                            {% include 'keywords/content.html' %}
+                        <!-- end:: Content -->
+					</div>
+
+                    <!-- begin:: Footer -->
+                        {% include 'components/footer.html' %}
+                    <!-- end:: Footer -->
+				</div>
+			</div>
+		</div>
+    <!-- end:: Page -->
+{% endblock %}
+{% block script %}
+    <script type="application/javascript">
+        let table;
+
+        $(document)
+        .ready(function() {
+            $.ajax({
+                type: 'GET',
+                url: '/api/entities',
+                success: function(res) {
+                    let options = [];
+                    res.forEach((item, i) => options[i] = `<option value=${item.id}>${item.entity}</option>`);
+                    $('[name="entity_id"]').append(options.join(''));
+                }
+            })
+
+            table = $('#keyword_table').DataTable({
+                ajax: {
+                    url: '/api/keywords',
+                    dataSrc: function(json) {
+                        return json;
+                    },
+                },
+                serverSide: false,
+                bLengthChange: false,
+                sDom: 'lrtip',
+                order: [],
+                columns: [
+                    {
+                        title: 'STT',
+                        data: null,
+                        render: function (data, type, full, meta) {
+                            return meta.row + 1;
+                        },
+                        class: 'text-center',
+                    },
+                    {
+                        data: 'keyword',
+                        title: 'Từ khóa',
+                        render: function(data, type, full, meta) {
+                            return data;
+                        },
+                    },
+                    {
+                        data: 'entity_entity',
+                        title: 'Loại thực thể',
+                        render: function(data, type, full, meta) {
+                            return data;
+                        },
+                    },
+                    {
+                        orderable: false,
+                        data: null,
+                        title: "Thao tác",
+                        render: function (data, type, item) {
+                            var re = `<a href="javascript:void(0)" btn-editdata  data-id="${data.id}"
+                                        class="m-portlet__nav-link btn m-btn m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="m-tooltip" title="Sửa thông tin"><i class="la la-edit"></i> </a>`;
+                            re += `<a href="javascript:void(0)" btn-deletedata data-id="${data.id}"
+                                        class="m-portlet__nav-link btn m-btn m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="m-tooltip" title="Xóa dữ liệu"><i class="la la-trash"></i> </a>`;
+                            return re;
+                        },
+                        class: 'text-center',
+                    },
+                ],
+            })
+            .on('click', '[btn-editdata]', function() {
+                const id = $(this).attr('data-id');
+                window.location.href = `/keywords/${id}`;
+            })
+            .on('click', '[btn-deletedata]', function() {
+                const id = $(this).attr('data-id');
+                const entity_id = $('[name="entity_id"]').val();
+                if (confirm('Bạn có chắc muốn xóa mục này')) {
+                    $.ajax({
+                        url : `/api/keywords/${id}`,
+                        type : 'delete',
+                        success : function (response) {
+                            toastr.success('Thành công');
+                            table.ajax.url(`/api/keywords?intent_id=${entity_id}`).load();
+                        }
+                    })
+                }   
+            })
+
+            $('.search1').on("keyup", function() {
+                table.search($(this).val().toLowerCase()).draw();
+            });
+        })
+        .on('change', '[name=entity_id]', function() {
+            const entity_id = $(this).val();
+            table.ajax.url(`/api/keywords?entity_id=${entity_id}`).load();
+        })
+    </script>
+{% endblock %}
+
+
+

@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- begin Modal -->
+    <div id="myModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chọn file excel để thêm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input class="form-control" type="file" id="input-excel" accept=".xls,.xlsx"  >
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" btn-save-excel>Xác nhận</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- end Modal -->
+    <!-- begin:: Page -->
+        {% include 'components/header_mobile.html' %}
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                    {% include 'components/aside.html' %}
+				<!-- end:: Aside -->
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                        {% include 'components/header.html' %}
+					<!-- end:: Header -->
+
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+						<!-- begin:: Content Head -->
+                            {% include 'sentences/content_head.html' %}
+						<!-- end:: Content Head -->
+
+                        <!-- begin:: Content -->
+                            {% include 'sentences/content.html' %}
+                        <!-- end:: Content -->
+					</div>
+
+                    <!-- begin:: Footer -->
+                        {% include 'components/footer.html' %}
+                    <!-- end:: Footer -->
+				</div>
+			</div>
+		</div>
+    <!-- end:: Page -->
+{% endblock %}
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+    <script type="application/javascript">
+
+        let selectedFile;
+        let table;
+
+        $(document).ready(function() {
+            $.ajax({
+                type: 'GET',
+                url:'/api/intents',
+                success: function(res) {
+                    res = res.sort((a, b) => a.intent.localeCompare(b.intent))
+                    let options = [];
+                    res.forEach((item, i) => options[i] = `<option value=${item.id}>${item.intent}</option>`);
+                    $('[name="intent_id"]').append(options.join(''));
+                }
+            })
+
+
+            table = $('#sentence_table').DataTable({
+                ajax: {
+                    url: '/api/sentences?intent_id=0',
+                    dataSrc: function(json) {
+                        return json;
+                    },
+                },
+                serverSide: false,
+                bLengthChange: false,
+                sDom: 'lrtip',
+                order: [],
+                columns: [
+                    {
+                        title: 'STT',
+                        data: null,
+                        render: function (data, type, full, meta) {
+                            return meta.row + 1;
+                        },
+                        class: 'text-center',
+                    },
+                    {
+                        data: 'sentence',
+                        title: 'Câu',
+                        searchable: true,
+                        render: function(data, type, full, meta) {
+                            return data;
+                        },
+                    },
+                    {
+                        data: null,
+                        title: 'Câu',
+                        searchable: true,
+                        render: function(data, type, full, meta) {
+                            if (data?.intent?.intent) {
+                                return data?.intent?.intent
+                            } else {
+                                return ''
+                            }
+                        },
+                    },
+                    {
+                        orderable: false,
+                        data: null,
+                        title: "Thao tác",
+                        render: function (data, type, item) {
+                            var re = `<a href="javascript:void(0)" btn-editdata  data-id="${data.id}"
+                                        class="m-portlet__nav-link btn m-btn m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="m-tooltip" title="Sửa thông tin"><i class="la la-edit"></i> </a>`;
+                            re += `<a href="javascript:void(0)" btn-deletedata data-id="${data.id}"
+                                        class="m-portlet__nav-link btn m-btn m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="m-tooltip" title="Xóa dữ liệu"><i class="la la-trash"></i> </a>`;
+                            return re;
+                        },
+                        class: 'text-center',
+                    },
+                ],
+            })
+            .on('click', '[btn-editdata]', function() {
+                const id = $(this).attr('data-id');
+                window.location.href = `/sentences/${id}`;
+            })
+            .on('click', '[btn-deletedata]', function() {
+                const id = $(this).attr('data-id');
+                const intent_id = $('[name="intent_id"]').val();
+                if (confirm('Bạn có chắc muốn xóa mục này')) {
+                    $.ajax({
+                        url : `/api/sentences/${id}`,
+                        type : 'delete',
+                        success : function (response) {
+                            toastr.success('Thành công');
+                            table.ajax.url(`/api/sentences?intent_id=${intent_id}`).load();
+                        }
+                    })
+                }   
+            })
+
+            $('.search1').on("keyup", function() {
+                table.search($(this).val().toLowerCase()).draw();
+            });
+        })
+        .on('click', '[import-excel]', function() {
+            $('#myModal').modal('toggle');
+        })
+        .on('change', '[name="intent_id"]', function() {
+            const intent_id = $(this).val();
+            table.ajax.url(`/api/sentences?intent_id=${intent_id}`).load();
+        })
+        
+
+
+        $('#myModal').on('change', '#input-excel', function(event) {
+            selectedFile = event.target.files[0];
+        })
+        .on('click', '[btn-save-excel]', function() {
+            if (selectedFile) {
+                let fileReader = new FileReader();
+                fileReader.readAsBinaryString(selectedFile);
+                fileReader.onload = (event)=>{
+                    let data = event.target.result;
+                    let workbook = XLSX.read(data,{type:"binary"});
+                    workbook.SheetNames.forEach(sheet => {
+                        let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+                        sentences = rowObject;
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/intents',
+                            async: false,
+                            success: function(intents){
+                                sentences.map(sentence => {
+                                    let intent = intents.find(item => item.intent === sentence.intent);
+                                    sentence.intent_id = intent.id;
+                                });
+                            }
+                        });
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/api/sentences/excel',
+                            contentType: 'application/json',
+                            dataType: 'json',
+                            data: JSON.stringify({
+                                data: sentences
+                            }),
+                            success: function(response) {
+                                toastr.success('Thành công');
+                                location.reload();
+                            }
+                        })
+                    });
+                }
+            }
+        })
+        
+    </script>
+{% endblock %}
+
+

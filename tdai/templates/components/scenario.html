@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" style="width: 30rem;">
+    <div class="card-header">
+        <p class="card-title">
+            <i class="far fa-window-maximize"></i>
+            <input type="text" class="input-title">
+            <i class="fas fa-trash-alt pull-right" delete-form-card data-toggle="tooltip" title="Xóa card"></i>
+        </p>
+    </div>
+    <div class="card-body">
+        <div class="row card-content">
+            <div class="col-3 border border-info text-center">
+                <p class="step_name">Bước 1</p>
+                <p class="step_description">Mô tả 1</p>
+            </div>
+            <div class="col-3 border border-info text-center">
+                <p class="step_name">abc</p>
+                <p>abc</p>
+            </div>
+            <div class="col-3 border border-info text-center">
+                <p class="step_name">abc</p>
+                <p>abc</p>
+            </div>
+            <div class="col-3 border border-success text-center div-add-step">
+                <i class="fa fa-plus"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block style %}
+<style>
+    .input-title{
+        border: 0;
+    }
+
+    div.col-3.border {
+        height: 70px;
+    }
+
+    div.col-3.border.border-info.text-center {
+        padding-right: -2px;
+        padding-left: -2px;
+    }
+    p.step_name {
+        padding-top: 10px;
+    }
+    i.fa.fa-plus {
+        padding-top: 30px;
+    }
+    .div-add-step:hover {
+        border-color: brown!important;
+    }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+    $('.card').on('click', '.div-add-step', function() {
+        var parent = $(this).parent();
+        $(this).remove();
+
+        parent.append(`
+            <div class="col-3 border border-info text-center">
+                <p class="step_name">Bước 1</p>
+                <p class="step_description">Mô tả 1</p>
+            </div>
+        `);
+
+        parent.append(`
+            <div class="col-3 border border-success text-center div-add-step">
+                <i class="fa fa-plus"></i>
+            </div>
+        `);
+    })
+</script>
+{% endblock %}

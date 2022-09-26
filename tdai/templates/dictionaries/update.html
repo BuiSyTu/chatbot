@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- begin:: Page -->
+        {% include 'components/header_mobile.html' %}
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                    {% include 'components/aside.html' %}
+				<!-- end:: Aside -->
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                        {% include 'components/header.html' %}
+					<!-- end:: Header -->
+
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+                        <div class="kt-subheader  kt-grid__item" id="kt_subheader">
+                            <div class="kt-container  kt-container--fluid ">
+                                <div class="kt-subheader__main">
+                                    <h3 class="kt-subheader__title">Sửa từ điển</h3>
+
+                                </div>
+                                <div class="kt-subheader__toolbar">
+                                    <div class="kt-subheader__wrapper">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <form id="update_dictionary_form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label>Từ khóa</label>
+                                        <input type="text" class="form-control word" name="word" placeholder="Từ khóa" value="{{ dictionary.word }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Từ thay thế</label>
+                                        <input type="text" class="form-control synonym" name="synonym" placeholder="Mô tả" value="{{ dictionary.synonym }}" required>
+                                    </div>
+                                    <div class="kt-portlet__foot">
+                                        <div class="kt-form__actions">
+                                            <button type="button" class="btn btn-primary" btn-save data-id="{{ dictionary.id }}">Xác nhận</button>
+                                            <button type="button" class="btn btn-secondary" btn-cancel>Trở về</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+
+					</div>
+
+                    <!-- begin:: Footer -->
+                        {% include 'components/footer.html' %}
+                    <!-- end:: Footer -->
+				</div>
+			</div>
+		</div>
+    <!-- end:: Page -->
+{% endblock %}
+{% block script%}
+    <script>
+        $('#update_dictionary_form')
+            .on('keyup keypress', function(e) {
+              let keyCode = e.keyCode || e.which;
+              if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+              }
+            })
+            .on('click', '[btn-cancel]', function() {
+                window.history.back();
+            })
+            .on('click', '[btn-save]', function(){
+                let id = $(this).attr('data-id');
+                let word = $('.word').val();
+                let synonym = $(".synonym").val();
+                $.ajax({
+                    url: `/api/dictionaries/${id}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        word,
+                        synonym
+                    }),
+                    success: function () {
+                        alert('Thành công');
+                        location.reload();
+                    }
+                })
+            })
+    </script>
+{% endblock %}
+
+

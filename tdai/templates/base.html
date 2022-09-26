@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<!-- begin::Head -->
+		<base href="">
+		<meta charset="utf-8" />
+		<title>Metronic | Dashboard</title>
+		<meta name="description" content="Updates and statistics">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+		<!--begin::Fonts -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
+
+		<!--end::Fonts -->
+
+		<!--begin::Page Vendors Styles(used by this page) -->
+		<link href="/static/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
+
+		<!--end::Page Vendors Styles -->
+
+		<!--begin::Global Theme Styles(used by all pages) -->
+		<link href="/static/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="/static/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+
+		<!--end::Global Theme Styles -->
+
+		<!--begin::Layout Skins(used by all pages) -->
+		<link href="/static/assets/css/skins/header/base/light.css" rel="stylesheet" type="text/css" />
+		<link href="/static/assets/css/skins/header/menu/light.css" rel="stylesheet" type="text/css" />
+		<link href="/static/assets/css/skins/brand/dark.css" rel="stylesheet" type="text/css" />
+		<link href="/static/assets/css/skins/aside/dark.css" rel="stylesheet" type="text/css" />
+
+		<!--end::Layout Skins -->
+		<link rel="shortcut icon" href="/static/assets/media/logos/favicon.ico" />
+		<link href="/static/assets/css/modal1.css" rel="stylesheet" type="text/css" />
+		<link href="/static/assets/css/custom.css" rel="stylesheet" type="text/css" />
+        <style>
+            span.select2-selection.select2-selection--multiple {
+                width: 635px;
+            }
+            span.select2-dropdown.select2-dropdown--above{
+                width: 300px !important;
+            }
+
+			.modal-backdrop {
+			  z-index: -1;
+			}
+		</style>
+		{% block style %} {% endblock %}
+
+	<!-- end::Head -->
+
+	<!-- begin::Body -->
+	<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--static kt-header-mobile--fixed kt-subheader--enabled kt-subheader--solid kt-aside--enabled kt-aside--fixed ">
+        {% block content %} {% endblock %}
+		<!-- begin::Scrolltop -->
+		<div id="kt_scrolltop" class="kt-scrolltop">
+			<i class="fa fa-arrow-up"></i>
+		</div>
+		<!-- end::Scrolltop -->
+		<!-- begin:: Sticktoolbar -->
+		<ul class="kt-sticky-toolbar" style="margin-top: 30px;">
+			<li class="kt-sticky-toolbar__item kt-sticky-toolbar__item--danger" id="kt_sticky_toolbar_chat_toggler" data-toggle="kt-tooltip" title="" data-placement="left" data-original-title="Chat Example">
+				<a data-toggle="modal" data-target="#kt_chat_modal"><i class="flaticon2-chat-1"></i></a>
+			</li>
+		</ul>
+		<!-- end:: Sticktoolbar -->
+<!--		<form action="/reply/" method="POST">-->
+		<!-- start chat -->
+		<td-chatbot line1="CỔNG DỊCH VỤ CÔNG" line2="TỈNH THANH HOÁ"
+        welcomemessage="Chào mừng bạn đễn với chatbot dịch vụ công tỉnh Thanh Hóa"></td-chatbot>
+			<!-- <div class="modal fade- modal-sticky-bottom-right show" type="hidden" id="kt_chat_modal" role="dialog" data-backdrop="false" style="display: none; padding-right: 17px;" aria-modal="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="kt-chat">
+						<div class="kt-portlet kt-portlet--last">
+							<div class="kt-portlet__head">
+								<div class="kt-chat__head ">
+									<div class="kt-chat__left">
+										<div class="kt-chat__label">
+											<p href="#" class="kt-chat__title">BOT</p>
+											<span class="kt-chat__status">
+												<span class="kt-badge kt-badge--dot kt-badge--success"></span> Active
+											</span>
+										</div>
+									</div>
+									<div class="kt-chat__right">
+										<button type="button" class="btn btn-clean btn-sm btn-icon" data-dismiss="modal">
+											<i class="flaticon2-cross"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="kt-portlet__body">
+								<div class="kt-scroll kt-scroll--pull ps" data-height="410" data-mobile-height="225" style="height: 410px; overflow: hidden;">
+									<div class="kt-chat__messages kt-chat__messages--solid">
+									</div>
+								<div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: -2px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+							</div>
+							<div class="kt-portlet__foot">
+								<div class="kt-chat__input">
+									<div class="kt-chat__editor">
+										<textarea id="chat_input" placeholder="Type here..." style="height: 50px" name="chat_input" ></textarea>
+									</div>
+									<div class="kt-chat__toolbar">
+										<div class="kt_chat__tools">
+											<a href="#"><i class="flaticon2-link"></i></a>
+											<a href="#"><i class="flaticon2-photograph"></i></a>
+											<a href="#"><i class="flaticon2-photo-camera"></i></a>
+                                                <i id="start-btn" class="fa fa-microphone fa-lg"></i>
+										</div>
+										<div class="kt_chat__actions">
+											<button id="abc" type="button" class="btn btn-brand btn-md  btn-font-sm btn-upper btn-bold kt-chat__reply" >reply</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+		<!-- end chat -->
+<!--		</form>-->
+		<!-- begin::Global Config(global config for global JS sciprts) -->
+		<script>
+			var KTAppOptions = {
+				"colors": {
+					"state": {
+						"brand": "#5d78ff",
+						"dark": "#282a3c",
+						"light": "#ffffff",
+						"primary": "#5867dd",
+						"success": "#34bfa3",
+						"info": "#36a3f7",
+						"warning": "#ffb822",
+						"danger": "#fd3995"
+					},
+					"base": {
+						"label": [
+							"#c5cbe3",
+							"#a1a8c3",
+							"#3d4465",
+							"#3e4466"
+						],
+						"shape": [
+							"#f0f3ff",
+							"#d9dffa",
+							"#afb4d4",
+							"#646c9a"
+						]
+					}
+				}
+			};
+		</script>
+
+		<!-- end::Global Config -->
+
+		<!--begin::Global Theme Bundle(used by all pages) -->
+		<script src="/static/assets/plugins/global/plugins.bundle.js" type="text/javascript"></script>
+		<script src="/static/assets/js/scripts.bundle.js" type="text/javascript"></script>
+
+		<!--end::Global Theme Bundle -->
+
+		<!--begin::Page Vendors(used by this page) -->
+		<script src="/static/assets/plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
+
+		<!--end::Page Vendors -->
+
+		<!--begin::Page Scripts(used by this page) -->
+		<script src="/static/assets/js/pages/crud/datatables/data-sources/ajax-client-side.js" type="text/javascript"></script>
+		<!--end::Page Scripts -->
+        <script src="/static/assets/js/modal1.js" type="text/javascript"></script>
+        <script src="/static/assets/js/speech_to_text.js"></script>
+		<script src="/static/assets/js/chatbot/runtime.js"></script>
+		<script src="/static/assets/js/chatbot/main.js"></script>
+		<!-- training_button -->
+		<script type="application/javascript">
+			$(".training_button").click(function (e) {
+				$.ajax({
+					url : `${location.origin}/training/`,
+					type : 'get',
+					success : function (response) {
+						toastr.success('Thành công');
+					}
+				});
+			})
+		</script>
+		
+		<!-- END training_button -->
+		{% block script %} {% endblock %}
+	</body>
+
+	<!-- end::Body -->
+</html>

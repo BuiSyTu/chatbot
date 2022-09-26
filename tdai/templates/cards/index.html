@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- begin:: Page -->
+        {% include 'components/header_mobile.html' %}
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                    {% include 'components/aside.html' %}
+				<!-- end:: Aside -->
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                        {% include 'components/header.html' %}
+					<!-- end:: Header -->
+
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+						<!-- begin:: Content Head -->
+                            {% include 'cards/content_head.html' %}
+						<!-- end:: Content Head -->
+
+                        <!-- begin:: Content -->
+                            {% include 'cards/content.html' %}
+                        <!-- end:: Content -->
+					</div>
+
+                    <!-- begin:: Footer -->
+                        {% include 'components/footer.html' %}
+                    <!-- end:: Footer -->
+				</div>
+			</div>
+		</div>
+    <!-- end:: Page -->
+{% endblock %}
+{% block script %}
+    <script>
+        let table;
+        $(document).ready(function() {
+            $.ajax({
+                type: 'GET',
+                url: '/api/steps',
+                success: function(res) {
+                    let options = [];
+                    res.forEach((item, i) => options[i] = `<option value=${item.id}>${res[i].name}</option>`);
+                    $('.step_id').append(options.join(''));          
+                }
+            })
+
+            table = $('#card_table').DataTable({
+                ajax: {
+                    url: '/api/cards',
+                    dataSrc: function(json) {
+                        return json;
+                    },
+                },
+                serverSide: false,
+                bLengthChange: false,
+                sDom: 'lrtip',
+                columns: [
+                    {
+                        title: 'STT',
+                        data: null,
+                        render: function (data, type, full, meta) {
+                            return meta.row + 1;
+                        },
+                        class: 'text-center',
+                    },
+                    {
+                        data: 'card_type',
+                        title: 'Loại thẻ',
+                        render: function(data, type, full, meta) {
+                            return data;
+                        },
+                    },
+                    {
+                        data: 'name',
+                        title: 'Tên thẻ',
+                        render: function(data, type, full, meta) {
+                            return data;
+                        },
+                    },
+                    {
+                        data: 'step.name',
+                        title: 'Tên bước',
+                        render: function(data, type, full, meta) {
+                            return data;
+                        },
+                    },
+                    {
+                        data: 'config',
+                        title: 'Cấu hình thẻ',
+                        render: function(data, type, full, meta) {
+                            return data;
+                        },
+                    },
+                    {
+                        data: 'position',
+                        title: 'Thứ tự thẻ',
+                        ordering: true,
+                        render: function(data, type, full, meta) {
+                            return data;
+                        },
+                    },
+                    {
+                        orderable: false,
+                        data: null,
+                        title: "Thao tác",
+                        render: function (data, type, item) {
+                            var re = `<a href="javascript:void(0)" btn-editdata  data-id="${data.id}"
+                                        class="m-portlet__nav-link btn m-btn m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="m-tooltip" title="Sửa thông tin"><i class="la la-edit"></i> </a>`;
+                            re += `<a href="javascript:void(0)" btn-deletedata data-id="${data.id}"
+                                        class="m-portlet__nav-link btn m-btn m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="m-tooltip" title="Xóa dữ liệu"><i class="la la-trash"></i> </a>`;
+                            return re;
+                        },
+                        class: 'text-center',
+                    },
+                ],
+            })
+            .on('click', '[btn-editdata]', function() {
+                const id = $(this).attr('data-id');
+                window.location.href = `/cards/${id}`;
+            })
+            .on('click', '[btn-deletedata]', function() {
+                const id = $(this).attr('data-id');
+                if (confirm('Bạn có chắc muốn xóa mục này')) {
+                    $.ajax({
+                        url : `/api/cards/${id}`,
+                        type : 'delete',
+                        success : function (response) {
+                            toastr.success('Thành công');
+
+                            const step_id = $('.step_id').val();
+                            const card_type = $('.card_type').val();
+                            table.ajax.url(`/api/cards?step_id=${step_id}&card_type=${card_type}`).load();
+                        }
+                    })
+                }   
+            })
+
+            $('.search1').on("keyup", function() {
+                table.search($(this).val().toLowerCase()).draw();
+            });
+        })
+        .on('change', '[name="step_id"]', function() {
+            const step_id = $(this).val();
+            const card_type = $('.card_type').val();
+            table.ajax.url(`/api/cards?step_id=${step_id}&card_type=${card_type}`).load();
+        })
+        .on('change', '[name="card_type"]', function() {
+            const step_id = $('.step_id').val();
+            const card_type = $(this).val();
+            table.ajax.url(`/api/cards?step_id=${step_id}&card_type=${card_type}`).load();
+        })
+    </script>
+{% endblock %}
+
+
+
