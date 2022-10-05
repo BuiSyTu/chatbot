@@ -21,5 +21,3 @@ def check_date(string):
         for matchNum, match in enumerate(matches, start=1):
             rs.append(match.group())
     return rs
-
-print(check_date("Ngày 12/11"))

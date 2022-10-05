@@ -120,7 +120,7 @@ def handle_api(config, entities):
 
         if (res.status_code == 200):
             (js_res, status) = json_try_loads(res.text)
-            if status == False or (js_res.get('error').get('code') == '500'):
+            if status == False or (js_res.get('error').get('code') != 200):
                 return get_api_error_answer()
         else:
             return get_api_error_answer()
@@ -129,7 +129,7 @@ def handle_api(config, entities):
         res = requests.request('POST', url=__urls, headers=__headers, data=json.dumps(__body))
         if (res.status_code == 200):
             (js_res, status) = json_try_loads(res.text)
-            if status == False or (js_res.get('error').get('code') == '500'):
+            if status == False or (js_res.get('error').get('code') != 200):
                 return get_api_error_answer()
         else:
             return get_api_error_answer()

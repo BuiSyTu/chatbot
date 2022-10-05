@@ -82,24 +82,7 @@ def test_nlp(request):
         rs_intent = sorted(rs_intent, key=lambda x: x.get('reliability'), reverse=True)
         if len(rs_intent) > 4:
             rs_intent = rs_intent[:4]
-
-        # predict entity
-        # entity_model = entity_model_helper.get_latest_model()
-        # entities = ner_prediction.predict_entity(text, entity_model)
-        # rs_entity = []
-        # for entity in entities:
-        #     rs_entity.append({
-        #         'keyword': entity[0],
-        #         'entity': entity[2]
-        #     })
-
-        # tokenize_text = ViTokenizer.tokenize(text)
-        # dates = check_date(tokenize_text)
-        # for date in dates:
-        #     rs_entity.append({
-        #         'keyword': date,
-        #         'entity': 'thoi_gian'
-        #     })
+            
         rs_entity = ner_prediction.predict_entity(text)
 
         data = {

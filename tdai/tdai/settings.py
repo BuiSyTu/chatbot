@@ -39,15 +39,6 @@ INSTALLED_APPS = [
     'api',
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    '127.0.0.1:3011',
-    '127.0.0.1:3012',
-    'http://localhost:8080',
-    'https://dieuhanhubnd.hanhchinhcong.net',
-    'https://forecast.tandan.com.vn',
-    'http://localhost:3011'
-)
-
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -59,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
 
 ROOT_URLCONF = 'tdai.urls'
 
