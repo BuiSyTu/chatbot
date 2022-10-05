@@ -36,7 +36,7 @@ def cards(request):
         status, message = check_used_intent(params)
 
         if not status:
-            return JsonResponse({"status": 400, "message": message}, safe=False)
+            return JsonResponse({"message": message}, safe=False, status=400)
 
         if params['card_type'] =='form':
             step_id= params['step_id']
@@ -47,7 +47,7 @@ def cards(request):
                 variables_id.append(question.get('variable_id'))
             bool = init_require_variables(step_id,variables_id)
             if not bool:
-                return JsonResponse({"status": 400, "message": "can't find variable_id"}, safe=False)
+                return JsonResponse({"message": "can't find variable_id"}, safe=False, status=400)
 
         try:
             Card.objects.create(
@@ -59,48 +59,47 @@ def cards(request):
                 created_time=timezone.now
             )
         except Exception as e:
-            print(e)
-            return JsonResponse({"status": 404, "message": "can\'t create card"}, safe=False)
-        return JsonResponse({"status": 200, "message": message}, safe=False)
+            return JsonResponse({"message": e}, safe=False, status=500)
+        return JsonResponse({"message": "Thêm thành công"}, safe=False)
 
 
 @csrf_exempt
 def card_detail(request, id):
     if request.method == "GET":
-        _cards = list(Card.objects.filter(id=id).values())
+        try:
+            card = Card.objects.get(id=id)
+        except:
+            return JsonResponse(None, safe=False, status=400)
 
-        if not _cards:
-            return JsonResponse(None, safe=False)
+        result = {
+            'id': card.id,
+            'step_id': card.step_id,
+            'card_type': card.card_type,
+            'name': card.name,
+            'config': json.loads(card.config),
+            'position': card.position,
+            'created_time': card.created_time,
+            'updated_time': card.updated_time
+        }
+        return JsonResponse(result, safe=False)
 
-        return JsonResponse(_cards[0], safe=False)
     elif request.method == "PUT":
         params = json.loads(request.body)
-
-        if params.get('card_type') == 'form':
-            step_id= params.get('step_id')
-            configs = params.get('config')
-            variables_id = []
-            # Lấy variable_id cua request
-            for question in configs['questions']:
-                variables_id.append(question.get('variable_id'))
-            bool = init_require_variables(step_id, variables_id)
-            if not bool:
-                return JsonResponse({"status": 400, "message": "can't find variable_id"}, safe=False)
 
         card = Card.objects.get(id=id)
         card.step_id = params.get('step_id')
         card.name = params.get('name')
         card.card_type = params.get('card_type')
-        card.config = params.get('config')
+        card.config = json.dumps(params.get('config'))
         card.position = params.get('position')
         card.updated_time = timezone.now
 
         card.save()
-        return JsonResponse({"status": 200}, safe=False)
+        return JsonResponse({"message": "Sửa thành công!"}, safe=False)
     elif request.method == 'DELETE':
         card = Card.objects.get(id=id)
         card.delete()
-        return JsonResponse({"status": 200}, safe=False)
+        return JsonResponse(None, safe=False, status=204)
     
 
 def get_position(card):

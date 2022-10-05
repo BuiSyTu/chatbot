@@ -106,12 +106,13 @@ def handle_api(config, entities):
         __dict[entity['entity']] =  entity['keyword']
 
     body_str = json.dumps(__body)
-    headers_str = json.dumps(__headers)
     body_str = handle_regex(body_str, __dict)
-    headers_str = handle_regex(headers_str, __dict)
     __body = json.loads(body_str)
-    __headers = json.loads(headers_str)
 
+    headers_str = json.dumps(__headers)
+    headers_str = handle_regex(headers_str, __dict)
+    __headers = json.loads(headers_str)
+    
     # call api and return response
     js_res = None
 
@@ -137,11 +138,17 @@ def handle_api(config, entities):
     # TODO: from response and entities, handle return answer
     if js_res != None:
         __answer = handle_regex(__answer, js_res)
+        button_str = json.dumps(__button)
+        button_str = handle_regex(button_str, js_res)
+        __button = json.loads(button_str)
 
     __dict = {}
     for entity in entities:
         __dict[entity['entity']] =  entity['keyword']
     __answer = handle_regex(__answer, __dict)
+    button_str = json.dumps(__button)
+    button_str = handle_regex(button_str, __dict)
+    __button = json.loads(button_str)
     
     return {
         "card_type": "text",
@@ -165,6 +172,10 @@ def handle_text(config, step_id, user_name, entities):
             __dict[variable] = value
     
     txt = handle_regex(__source, __dict)
+    button_str = json.dumps(__button)
+    button_str = handle_regex(button_str, __dict)
+    __button = json.loads(button_str)
+
     return {
         'card_type': 'text',
         'text': txt,

@@ -73,7 +73,7 @@ def update_variables(step_id, variable_name, value, user_name):
 def reset_variables(variable_names, user_name):
     variable_ids = []
     histories = HistoryChat.objects.filter(user_name=user_name)
-    if len(variable_names)== 1 and variable_names[0] == '*':
+    if len(variable_names) == 1 and variable_names[0] == '*':
         for history in histories:
             history.value = ''
             history.save()
