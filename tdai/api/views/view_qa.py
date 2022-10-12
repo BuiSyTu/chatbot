@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from chat_bot.models import Intent, Card
-from module import module_variables, module_qa
+from api.services import service_variable, service_qa
 
 
 @csrf_exempt
@@ -16,11 +16,11 @@ def QA(request):
         user_name = params.get('user_name')
         answer = []
 
-        entities = module_qa.predict_entity(text)
+        entities = service_qa.predict_entity(text)
 
         if not step_id:
             # Lấy ý định
-            intent_name = module_qa.classification_text(text)
+            intent_name = service_qa.classification_text(text)
             if intent_name == None:
                 return JsonResponse({'answers': []}, safe=False)
             intent = list(Intent.objects.filter(intent=intent_name).values())[0]
@@ -41,32 +41,32 @@ def QA(request):
                 }
                 answers.append(default_answer)
                 return JsonResponse({'answers': answers}, safe=False)
-            status = module_variables.init_history_variables(step_id, user_name)
+            status = service_variable.init_history_variables(step_id, user_name)
             if status:
-                answer_cards = module_qa.get_answer_cards(step_id, user_name, entities=entities)
+                answer_cards = service_qa.get_answer_cards(step_id, user_name, entities=entities)
 
-                answer = module_qa.get_answer(answer_cards, step_id, user_name, entities)
+                answer = service_qa.get_answer(answer_cards, step_id, user_name, entities)
         else:
-            answer_cards = module_qa.get_answer_cards(step_id, user_name, entities=entities)[-1]  # form_card
-            lent = len(module_qa.get_answer_cards(step_id, user_name, entities=entities)) - 1
+            answer_cards = service_qa.get_answer_cards(step_id, user_name, entities=entities)[-1]  # form_card
+            lent = len(service_qa.get_answer_cards(step_id, user_name, entities=entities)) - 1
             text = params.get('sentence')
-            key, check = module_variables.check_variable_values(answer_cards, user_name)
-            if module_variables.validate_variables(text, key):
+            key, check = service_variable.check_variable_values(answer_cards, user_name)
+            if service_variable.validate_variables(text, key):
                 # Nếu chưa lấy câu yêu cầu nhập biến
                 if not check:
-                    update_status = module_variables.update_variables(step_id, key, text, user_name)
+                    update_status = service_variable.update_variables(step_id, key, text, user_name)
                     if update_status:
-                        key1, check1 = module_variables.check_variable_values(answer_cards, user_name)
+                        key1, check1 = service_variable.check_variable_values(answer_cards, user_name)
                         if check1:
-                            answer_cards = module_qa.get_answer_cards(step_id, user_name, entities=entities)
-                            answer = module_qa.get_answer(answer_cards, step_id, user_name, entities)
+                            answer_cards = service_qa.get_answer_cards(step_id, user_name, entities=entities)
+                            answer = service_qa.get_answer(answer_cards, step_id, user_name, entities)
                         else:
-                            answer = module_qa.get_answer([answer_cards], step_id, user_name, entities)
+                            answer = service_qa.get_answer([answer_cards], step_id, user_name, entities)
                 else:
-                    answer_cards = module_qa.get_answer_cards(step_id, user_name, lent, entities=entities)
-                    answer = module_qa.get_answer(answer_cards, step_id, user_name, entities)
+                    answer_cards = service_qa.get_answer_cards(step_id, user_name, lent, entities=entities)
+                    answer = service_qa.get_answer(answer_cards, step_id, user_name, entities)
             else:
-                answer = module_qa.get_requestion(answer_cards, user_name)
+                answer = service_qa.get_requestion(answer_cards, user_name)
         return JsonResponse(answer, safe=False)
 
 @csrf_exempt

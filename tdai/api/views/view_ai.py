@@ -85,25 +85,6 @@ def test_nlp(request):
         if len(rs_intent) > 4:
             rs_intent = rs_intent[:4]
 
-        # predict entity
-        # entity_model = entity_model_helper.get_latest_model()
-        # entities = ner_prediction.predict_entity(sentence, entity_model)
-        # rs_entity = []
-        # for entity in entities:
-        #     rs_entity.append({
-        #         'keyword': entity[0],
-        #         'entity': entity[2]
-        #     })
-        #     print(rs_entity)
-
-        # tokenize_sentence = ViTokenizer.tokenize(sentence)
-        # dates = check_date(tokenize_sentence)
-        # for date in dates:
-        #     rs_entity.append({
-        #         'keyword': date,
-        #         'entity': 'thoi_gian'
-        #     })
-        #     print(rs_entity)
         rs_entity = ner_prediction.predict_entity(sentence)
 
         data = {

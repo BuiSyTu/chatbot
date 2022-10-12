@@ -16,7 +16,7 @@ def bots(request):
         # handle user_id
         user_id = None
         if 'user_id' in request.session:
-            user_id = request.session['user_id']
+            user_id = request.session.get('user_id')
             _bots = _bots.filter(user_id__exact=user_id)
 
         for bot in _bots:

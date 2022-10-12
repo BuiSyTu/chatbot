@@ -1,32 +1,7 @@
 import json
-import random
 import re
 
 from chat_bot.models import HistoryChat, Variable, RequireVariables
-
-
-# Lưu thông tin các biến yêu cầu trong 1 bước
-def init_require_variables(step_id, variable_ids):
-    try:
-        for variable_id in variable_ids:
-            # Lưu lại vào HistoryChat
-            RequireVariables.objects.create(
-                step_id=step_id,
-                variable_id=variable_id
-            )
-        return True
-    except Exception as e:
-        print(e)
-        return False
-
-def remove_require_variables(step_id, variable_ids):
-    try:
-        for variable_id in variable_ids:
-            RequireVariables.objects.filter(step_id=step_id).filter(variable_id=variable_id).delete()
-        return True
-    except Exception as e:
-        print(e)
-        return False
 
 
 def init_history_variables(step_id, user_name):
@@ -57,7 +32,7 @@ def init_history_variables(step_id, user_name):
 # Cập nhật lại giá trị variable cho step
 def update_variables(step_id, variable_name, value, user_name):
     user_variables = HistoryChat.objects.filter(step_id=step_id).filter(user_name=user_name)
-    variable = list(Variable.objects.filter(name= variable_name).values())[0]
+    variable = list(Variable.objects.filter(name=variable_name).values())[0]
     variable_id = variable['id']
     for user_variable in user_variables:
         if user_variable.variable_id == variable_id:
@@ -133,7 +108,7 @@ def get_value_by_variablename(step_id,user_name,variable_name):
     for history in histories:
         if history.variable_id == variable_id:
             return history.value,True
-    return "",False
+    return "", False
 
 
 def check_variable_type(answer: str, variable_type: str):
@@ -145,6 +120,5 @@ def check_variable_type(answer: str, variable_type: str):
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         return True if re.search(regex, answer) else False
     elif variable_type == 'Phone':
-        # FIXME: find a regex for phone number
         return True if answer.isnumeric() and len(answer) == 10 else False
 

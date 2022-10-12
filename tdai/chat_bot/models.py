@@ -161,6 +161,5 @@ class RequireVariables(models.Model):
 class HistoryChat(models.Model):
     step = models.ForeignKey(Step, null=True, blank=True, on_delete=None)
     variable = models.ForeignKey(Variable, null=True, blank=True, on_delete=None)
-    # user = models.ForeignKey(User, null=True, blank=True, on_delete=None)
     user_name = models.CharField(max_length=1000, null=True, blank=True)
     value = models.CharField(max_length=1000, null=True, blank=True)

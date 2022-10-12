@@ -6,13 +6,10 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from sklearn.linear_model import LogisticRegression
 
-from chat_bot.models import Sentence, Intent, Entity, KeyWord, IntentModel, EntityModel
-from chat_bot.utils import intent_model_helper, entity_model_helper
+from chat_bot.models import Sentence, Intent, IntentModel
+from chat_bot.utils import intent_model_helper
 from tandan_nlp.classification import trainer as clf_trainer, prediction as clf_prediction
-from tandan_nlp.ner import reader, trainer as ner_trainer, prediction_bert as ner_prediction
-from tandan_nlp.util.check_date import check_date
-
-from pyvi.ViTokenizer import ViTokenizer
+from tandan_nlp.ner import prediction_bert as ner_prediction
 
 
 @csrf_exempt
@@ -36,29 +33,6 @@ def training(request):
             created_time=timezone.now()
         )
 
-        # training entity
-        # words = []
-        # entities = []
-        # keywords = KeyWord.objects.all()
-        # for keyword in keywords:
-        #     entity = Entity.objects.get(id=keyword.entity_id)
-        #     words.append(keyword.keyword)
-        #     entities.append(entity.entity)
-        # features = []
-        # for sentence in sentences:
-        #     feature = []
-        #     word_features, pos_features, entity_features = reader.read_entities(sentence.sentence, words, entities)
-        #     [feature.append((word_features[i], pos_features[i], entity_features[i])) for i in range(len(word_features))]
-        #     features.append(feature)
-        # x_train, y_train = ner_trainer.get_train_data(features)
-        # entity_model = ner_trainer.training(x_train, y_train)
-        # print(entity_model)
-        # entity_model_dump = pickle.dumps(entity_model)
-        # EntityModel.objects.create(
-        #     bot_id=3,
-        #     data=entity_model_dump,
-        #     created_time=timezone.now()
-        # )
         return JsonResponse({"type": "POST"}, safe=False)
 
 

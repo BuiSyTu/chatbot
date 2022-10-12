@@ -26,7 +26,6 @@ urlpatterns = [
     path('bots/<id>', view_bot.bot_detail),
     # sentence
     path('sentences', view_sentence.sentences),
-    path('sentences/excel', view_sentence.sentences_excel),
     # path('sentences/filter_table', view_sentence.filter_table),
     path('sentences/<id>', view_sentence.sentence_detail),
     # intent
