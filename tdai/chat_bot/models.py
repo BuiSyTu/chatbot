@@ -163,3 +163,7 @@ class HistoryChat(models.Model):
     variable = models.ForeignKey(Variable, null=True, blank=True, on_delete=None)
     user_name = models.CharField(max_length=1000, null=True, blank=True)
     value = models.CharField(max_length=1000, null=True, blank=True)
+
+class ChatVoice(models.Model):
+    text = models.CharField(max_length=1000, null=True, blank=True)
+    link = models.CharField(max_length=1000, null=True, blank=True)
