@@ -63,7 +63,6 @@ def get_requestion(card, user_name, entities):
     return {'step_id': step_id, 'answer': arr}
 
 def handle_card_form(card, user_name, entities):
-    arr = []
     key, check = service_variable.check_variable_values(card, user_name, entities)
     # Nếu mà các biến chưa đủ giá trị
     if not check:
@@ -77,8 +76,8 @@ def handle_card_form(card, user_name, entities):
                     'text': questions[i]['question'],
                     'buttons': []
                 }
-                arr.append(new_config)
-    return arr
+                return new_config
+    return None
 
 def handle_api(config, entities):
     __urls = config.get('url')
