@@ -1,13 +1,11 @@
 import json
 
 from django.http import JsonResponse
-from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from operator import itemgetter
 
 from api.repositories import repository_step
-
-from api.services import service_variable, service_qa
+from api.services import service_variable, service_qa, service_voice
 
 @csrf_exempt
 def steps(request):
@@ -44,8 +42,8 @@ def jumpto_step(request):
         status = service_variable.init_history_variables(step_id, user_name)
         if status:
             answer_cards = service_qa.get_answer_cards(step_id,user_name)
-            answer = service_qa.get_answer(answer_cards,step_id, user_name)
-            return JsonResponse(answer, safe=False)
+            answers = service_qa.get_answer(answer_cards,step_id, user_name)
+            return JsonResponse(answers, safe=False)
         
         return JsonResponse({
             'answers': [],

@@ -7,7 +7,7 @@ from tandan_nlp.classification import prediction as clf_prediction
 from tandan_nlp.ner import prediction_bert as ner_prediction
 from api.repositories import repository_card
 from api.utils import handle_regex, json_try_loads
-from api.services import service_card, service_variable
+from api.services import service_card, service_variable, service_voice
 
 
 def get_answer_cards(step_id, user_name, start_position=0, entities=[]):
@@ -41,6 +41,8 @@ def get_answer(cards, step_id, user_name, entities = []):
         elif card['card_type'] == 'form':
             res = handle_card_form(card=card, user_name=user_name, entities=entities)
             arr.append(res)
+
+    arr = append_voice(arr)
     return {'step_id': step_id, 'answers': arr}
 
 
@@ -60,6 +62,8 @@ def get_requestion(card, user_name, entities):
                         'buttons': []
                     }
                     arr.append(new_config)
+
+    arr = append_voice(arr)
     return {'step_id': step_id, 'answer': arr}
 
 def handle_card_form(card, user_name, entities):
@@ -187,3 +191,9 @@ def get_api_error_answer():
         "text": "Không tìm thấy kết quả phù hợp, vui lòng thử lại sau.",
         "buttons": []
     }
+
+def append_voice(answers):
+    for answer in answers:
+        src_voice = service_voice.get_voice(text=answer['text'])
+        answer['srcVoice'] = src_voice['async']
+    return answers

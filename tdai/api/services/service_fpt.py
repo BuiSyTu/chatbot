@@ -8,7 +8,7 @@ def get_voice(payload):
         url = 'https://api.fpt.ai/hmi/tts/v5'
 
         headers = {
-            'api-key': 'cnnvqSxKkxOHXwJvkff681tgU7O8Gi0B',
+            'api-key': 'bzlrIiNZ4ktunDyXO6vyrXP3ut0pKkXE',
             'speed': '',
             'voice': 'banmai'
         }
