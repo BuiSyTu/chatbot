@@ -1,6 +1,7 @@
 import json
 
 from django.utils import timezone
+from django.forms.models import model_to_dict
 
 from chat_bot.models import Card, Step, HistoryUsedIntent
 from api.repositories import repository_variable
@@ -11,7 +12,7 @@ def get_all(request):
     # handle step_id
     step_id = request.GET.get('step_id')
     if step_id != '0' and step_id != None:
-        _cards = _cards.filter(step_id__exact=step_id)
+        _cards = _cards.filter(step_id__exact=int(step_id))
     
     # handle card_type
     card_type = request.GET.get('card_type')
@@ -20,8 +21,8 @@ def get_all(request):
 
     result = list(_cards.values())
     for card in result:
-        steps = list(Step.objects.filter(id=card['step_id']).values())
-        card['step'] = steps[0]
+        step = Step.objects.get(id=card['step_id'])
+        card['step'] = model_to_dict(step)
 
     return result
 
@@ -90,29 +91,20 @@ def check_used_intent(request):
 def get_by_id(id):
     try:
         card = Card.objects.get(id=id)
+        result = model_to_dict(card)
+        result['config'] = json.loads(result['config'])
+
+        return {
+            "status": 200,
+            "result": result,
+            "message": None
+        }
     except Exception as e:
         return {
-            "status": 400,
+            "status": 500,
             "message": str(e),
             "result": None
         }
-
-    result = {
-        'id': card.id,
-        'step_id': card.step_id,
-        'card_type': card.card_type,
-        'name': card.name,
-        'config': json.loads(card.config),
-        'position': card.position,
-        'created_time': card.created_time,
-        'updated_time': card.updated_time
-    }
-
-    return {
-        "status": 200,
-        "result": result,
-        "message": None
-    }
 
 def update(id, params):
     try:

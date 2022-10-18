@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.forms import model_to_dict
 
 from chat_bot.models import Dictionary
 
@@ -30,18 +31,21 @@ def create(params):
         }
 
 def get_by_id(id):
-    _dictionaries = list(Dictionary.objects.filter(id=id).values())
+    try:
+        dictionary = Dictionary.objects.get(id=id)
+        result = model_to_dict(dictionary)
 
-    if not _dictionaries or len(_dictionaries) == 0:
         return {
-            'status': 404,
-            'message': None
+            "status": 200,
+            "result": result,
+            "message": None
         }
-
-    return {
-        'status': 200,
-        'result': _dictionaries[0]
-    }
+    except Exception as e:
+        return {
+            "status": 500,
+            "message": str(e),
+            "result": None
+        }
 
 def update(id, params):
     try:

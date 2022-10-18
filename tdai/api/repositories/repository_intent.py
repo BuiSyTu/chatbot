@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.forms import model_to_dict
 
 from chat_bot.models import Intent, Sentence
 
@@ -40,6 +41,15 @@ def create(params):
 def get_by_id(id):
     try:
         _intent = Intent.objects.get(id=id)
+        result = model_to_dict(_intent)
+        sentences = list(Sentence.objects.filter(intent_id=id).values())
+        result['sentences'] = sentences
+
+        return {
+            'status': 200,
+            'message': None,
+            'result': result
+        }
     except Exception as e:
         print(e)
         return {
@@ -47,23 +57,6 @@ def get_by_id(id):
             'message': str(e),
             'result': None
         }
-
-    sentences = list(Sentence.objects.filter(intent_id=id).values())
-    result = {
-        'id': _intent.id,
-        'bot_id': _intent.bot_id,
-        'intent': _intent.intent,
-        'description': _intent.description,
-        'sentences': sentences,
-        'created_time': _intent.created_time,
-        'updated_time': _intent.updated_time
-    }
-
-    return {
-        'status': 200,
-        'message': None,
-        'result': result
-    }
 
 def update(id, params):
     try:

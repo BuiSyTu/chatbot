@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.forms import model_to_dict
 
 from chat_bot.models import RequireVariables, Variable
 
@@ -28,26 +29,19 @@ def create(params):
 def get_by_id(id):
     try:
         _variable = Variable.objects.get(id=id)
+        result = model_to_dict(_variable)
+
+        return {
+            'status': 200,
+            'message': None,
+            'result': result
+        }
     except Exception as e:
         return {
             'status': 500,
             'message': str(e),
             'result': None
         }
-
-    result = {
-        'id': _variable.id,
-        'name': _variable.name,
-        'variable_type': _variable.variable_type,
-        'created_time': _variable.created_time,
-        'updated_time': _variable.updated_time
-    }
-
-    return {
-        'status': 200,
-        'message': None,
-        'result': result
-    }
 
 def update(id, params):
     try:

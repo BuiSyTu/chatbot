@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.forms import model_to_dict
 
 from chat_bot.models import Entity, KeyWord, Variable
 
@@ -47,28 +48,20 @@ def create(params):
 def get_by_id(id):
     try:
         _entity = Entity.objects.get(id=id)
+        result = model_to_dict(_entity)
+        result['total_keyword'] = len(KeyWord.objects.filter(entity_id__exact=_entity.id))
+
+        return {
+            'status': 200,
+            'message': None,
+            'result': result
+        }
     except Exception as e:
         return {
             'status': 500,
             'message': str(e),
             'result': None
         }
-
-    result = {
-        'id': _entity.id,
-        'bot_id': _entity.bot_id,
-        'entity': _entity.entity,
-        'description': _entity.description,
-        'total_keyword': len(KeyWord.objects.filter(entity_id__exact=_entity.id)),
-        'created_time': _entity.created_time,
-        'updated_time': _entity.updated_time
-    }
-
-    return {
-        'status': 200,
-        'message': None,
-        'result': result
-    }
 
 def update(id, params):
     try:

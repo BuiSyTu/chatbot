@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.forms import model_to_dict
 
 from chat_bot.models import Intent, Sentence
 
@@ -17,9 +18,8 @@ def get_all(request):
 
     result = list(_sentences.values())
     for sen in result:
-        intents = list(Intent.objects.filter(id=sen['intent_id']).values())
-        if (len(intents) > 0):
-            sen['intent'] = intents[0]
+        intent = Intent.objects.get(id=sen['intent_id'])
+        sen['intent'] = model_to_dict(intent)
     return result
 
 def create(params):
@@ -43,27 +43,20 @@ def create(params):
 def get_by_id(id):
     try:
         _sentence = Sentence.objects.get(id=id)
+        result = model_to_dict(_sentence)
+        result['intent_intent'] = getattr(_sentence.intent, 'intent', None)
+
+        return {
+            'status': 200,
+            'message': None,
+            'result': result
+        }
     except Exception as e:
         return {
             'status': 500,
             'message': str(e),
             'result': None
         }
-
-    result = {
-        'id': _sentence.id,
-        'sentence': _sentence.sentence,
-        'intent_id': _sentence.intent_id,
-        'intent_intent': getattr(_sentence.intent, 'intent', None),
-        'bot_id': _sentence.bot_id,
-        'bot_name': getattr(_sentence.bot, 'name', None)
-    }
-
-    return {
-        'status': 200,
-        'message': None,
-        'result': result
-    }
 
 def update(id, params):
     try:
