@@ -2,8 +2,10 @@ from django.urls import path
 
 from api.views import view_ai, view_entity, view_intent, view_keyword, view_reply, view_step, view_sentence, view_bot, view_user, view_dictionary, view_qa, view_scenario, view_variable, view_card,view_qa
 from api.views import view_historychat,view_requirevariables
-from api.views import view_testcallapi, view_voice
+from api.views import view_testcallapi, view_voice, view_common
 urlpatterns = [
+    # common
+    path('common/current_date', view_common.get_current_date),
     # fpt
     path('t2s',view_voice.text_to_speed),
     # test call api
