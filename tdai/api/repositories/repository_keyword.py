@@ -13,8 +13,8 @@ def get_all(request):
         _keywords = _keywords.filter(bot_id__exact=bot_id)
 
     # handle entity_id
-    entity_id = request.GET.get('entity_id')
-    if (entity_id is not None and entity_id != '0'):
+    entity_id = request.GET.get('entity_id', None)
+    if entity_id is not None:
         _keywords = _keywords.filter(entity_id__exact=entity_id)
 
     # handle return

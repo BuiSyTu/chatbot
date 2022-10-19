@@ -12,8 +12,8 @@ def get_all(request):
         _sentences = _sentences.filter(bot_id__exact=bot_id)
 
     # handle intent_id
-    intent_id = request.GET.get('intent_id')
-    if intent_id != None and intent_id != '0':
+    intent_id = request.GET.get('intent_id', None)
+    if intent_id is not None:
         _sentences = _sentences.filter(intent_id__exact=intent_id)
 
     result = list(_sentences.values())

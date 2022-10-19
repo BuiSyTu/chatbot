@@ -15,8 +15,8 @@ def get_all(request):
         _steps = _steps.filter(bot_id__exact=bot_id)
 
     # handle scenario_id
-    scenario_id = request.GET.get('scenario_id')
-    if (scenario_id != None and scenario_id != '0'):
+    scenario_id = request.GET.get('scenario_id', None)
+    if scenario_id is not None:
         _steps = _steps.filter(scenario_id__exact=scenario_id)
 
     result = list(_steps.values())

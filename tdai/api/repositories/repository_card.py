@@ -10,13 +10,13 @@ def get_all(request):
     _cards = Card.objects.order_by('position')
 
     # handle step_id
-    step_id = request.GET.get('step_id')
-    if step_id != '0' and step_id != None:
+    step_id = request.GET.get('step_id', None)
+    if step_id is not None:
         _cards = _cards.filter(step_id__exact=int(step_id))
     
     # handle card_type
-    card_type = request.GET.get('card_type')
-    if card_type != '0' and card_type != None:
+    card_type = request.GET.get('card_type', None)
+    if card_type is not None:
         _cards = _cards.filter(card_type__exact=card_type)
 
     result = list(_cards.values())

@@ -14,7 +14,7 @@ def get_all(request):
     result = list(_entities.values())
 
     # hanle include
-    include = request.GET.get('include')
+    include = request.GET.get('include', None)
     if include == 'count':
         for entity in result:
             count = len(list(KeyWord.objects.filter(entity_id=entity['id'])))

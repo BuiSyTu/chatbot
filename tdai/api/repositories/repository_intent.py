@@ -14,7 +14,7 @@ def get_all(request):
     result = list(_intents.values())
 
     # handle include
-    include = request.GET.get('include')
+    include = request.GET.get('include', None)
     if include == 'count':
         for intent in result:
             count = len(list(Sentence.objects.filter(intent_id__exact=intent['id'])))
