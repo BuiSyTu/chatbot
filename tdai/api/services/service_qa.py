@@ -195,5 +195,5 @@ def get_api_error_answer():
 def append_voice(answers):
     for answer in answers:
         src_voice = service_voice.get_voice(text=answer['text'])
-        answer['srcVoice'] = src_voice['async']
+        answer['srcVoice'] = src_voice['async'] if src_voice is not None else None
     return answers
