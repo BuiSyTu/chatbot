@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.forms import model_to_dict
 
-from chat_bot.models import Scenario
+from chat_bot.models import Scenario, Step
 
 def get_all(request):
     _scenarioes = Scenario.objects.all()
@@ -13,6 +13,10 @@ def get_all(request):
         _scenarioes = _scenarioes.filter(bot_id__exact=bot_id)
 
     result = list(_scenarioes.values())
+
+    for scenario in result:
+        steps = list(Step.objects.filter(scenario_id=scenario['id']).values())
+        scenario['steps'] = steps
     return result
 
 def create(params):

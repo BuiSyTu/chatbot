@@ -74,7 +74,7 @@
 
             table = $('#sentence_table').DataTable({
                 ajax: {
-                    url: '/api/sentences?intent_id=0',
+                    url: '/api/sentences',
                     dataSrc: function(json) {
                         return json;
                     },

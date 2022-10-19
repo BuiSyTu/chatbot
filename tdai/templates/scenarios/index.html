@@ -37,7 +37,7 @@
         $(document).ready(function() {
             table = $('#scenario_table').DataTable({
                 ajax: {
-                    url: '/api/scenarios?include=count',
+                    url: '/api/scenarios',
                     dataSrc: function(json) {
                         return json;
                     },
