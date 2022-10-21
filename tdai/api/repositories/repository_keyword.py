@@ -14,7 +14,7 @@ def get_all(request):
 
     # handle entity_id
     entity_id = request.GET.get('entity_id', None)
-    if entity_id is not None:
+    if entity_id is not None and entity_id != '0':
         _keywords = _keywords.filter(entity_id__exact=entity_id)
 
     # handle return

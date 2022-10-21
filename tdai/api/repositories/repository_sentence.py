@@ -44,7 +44,8 @@ def get_by_id(id: int):
     try:
         _sentence = Sentence.objects.get(id=id)
         result = model_to_dict(_sentence)
-        result['intent_intent'] = getattr(_sentence.intent, 'intent', None)
+        result['intent_id'] = result['intent']
+        result['intent'] = model_to_dict(Intent.objects.get(id=result['intent_id'])) if result['intent_id'] != None else None
 
         return {
             'status': 200,

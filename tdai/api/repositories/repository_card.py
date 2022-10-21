@@ -11,12 +11,12 @@ def get_all(request):
 
     # handle step_id
     step_id = request.GET.get('step_id', None)
-    if step_id is not None:
+    if step_id is not None and step_id != '0':
         _cards = _cards.filter(step_id__exact=int(step_id))
     
     # handle card_type
     card_type = request.GET.get('card_type', None)
-    if card_type is not None:
+    if card_type is not None and card_type != '0':
         _cards = _cards.filter(card_type__exact=card_type)
 
     result = list(_cards.values())
@@ -92,6 +92,7 @@ def get_by_id(id: int):
     try:
         card = Card.objects.get(id=id)
         result = model_to_dict(card)
+        result['step_id'] = result['step']
         result['config'] = json.loads(result['config'])
 
         return {

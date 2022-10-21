@@ -49,7 +49,9 @@ def get_by_id(id: int):
     try:
         _entity = Entity.objects.get(id=id)
         result = model_to_dict(_entity)
-        result['total_keyword'] = len(KeyWord.objects.filter(entity_id__exact=_entity.id))
+        keywords = list(KeyWord.objects.filter(intent_id=id).values())
+        result['keywords'] = keywords
+        result['total_keyword'] = len(keywords)
 
         return {
             'status': 200,

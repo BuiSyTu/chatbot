@@ -67,6 +67,7 @@ def get_by_id(id: int):
     result = {
         'id': step.id,
         'scenario_id': step.scenario_id,
+        'scenario': model_to_dict(Scenario.objects.get(id=step.scenario_id)) if step.scenario_id is not None else None,
         'name': step.name,
         'position': step.position,
         'cards': cards,
