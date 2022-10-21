@@ -50,7 +50,7 @@ def create(params):
             'message': str(e)
         }
 
-def get_by_id(id):
+def get_by_id(id: int):
     try:
         _keyword = KeyWord.objects.get(id=id)
         result = model_to_dict(_keyword)
@@ -68,7 +68,7 @@ def get_by_id(id):
             'result': None
         }
 
-def update(id, params):
+def update(id: int, params):
     try:
         keyword = KeyWord.objects.get(id=id)
         keyword.keyword = params.get('keyword')
@@ -86,7 +86,7 @@ def update(id, params):
             'message': str(e)
         }
 
-def delete(id):
+def delete(id: int):
     try:
         keyword = KeyWord.objects.get(id=id)
         keyword.delete()

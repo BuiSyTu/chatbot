@@ -36,7 +36,7 @@ def create(params):
             'message': str(e)
         }
 
-def get_by_id(id):
+def get_by_id(id: int):
     try:
         scenario = Scenario.objects.get(id=id)
         result = model_to_dict(scenario)
@@ -52,7 +52,7 @@ def get_by_id(id):
             'status': 404
         }
 
-def update(id, params):
+def update(id: int, params):
     try:
         scenario = Scenario.objects.get(id=id)
         scenario.name = params.get('name')
@@ -69,7 +69,7 @@ def update(id, params):
             'message': str(e)
         }
 
-def delete(id):
+def delete(id: int):
     try:
         scenario = Scenario.objects.get(id=id)
         scenario.delete()

@@ -45,7 +45,7 @@ def create(params):
             'message': str(e)
         }
 
-def get_by_id(id):
+def get_by_id(id: int):
     try:
         _entity = Entity.objects.get(id=id)
         result = model_to_dict(_entity)
@@ -63,7 +63,7 @@ def get_by_id(id):
             'result': None
         }
 
-def update(id, params):
+def update(id: int, params):
     try:
         entity = Entity.objects.get(id=id)
         entity.entity = params.get('entity')
@@ -80,7 +80,7 @@ def update(id, params):
             'message': str(e)
         }
 
-def delete(id):
+def delete(id: int):
     try:
         entity = Entity.objects.get(id=id)
         entity.delete()

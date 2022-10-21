@@ -88,7 +88,7 @@ def check_used_intent(request):
         print(e)
         return True
 
-def get_by_id(id):
+def get_by_id(id: int):
     try:
         card = Card.objects.get(id=id)
         result = model_to_dict(card)
@@ -106,7 +106,7 @@ def get_by_id(id):
             "result": None
         }
 
-def update(id, params):
+def update(id: int, params):
     try:
         card = Card.objects.get(id=id)
         config = params.get('config')
@@ -129,7 +129,7 @@ def update(id, params):
             "message": str(e)
         }
 
-def delete(id):
+def delete(id: int):
     try:
         card = Card.objects.get(id=id)
         card.delete()
@@ -143,7 +143,7 @@ def delete(id):
             'message': str(e)
         }
 
-def get_by_step_id(step_id):
+def get_by_step_id(step_id: int):
     cards = list(Card.objects.filter(step_id=step_id).values())
     try:
         cards = sorted(cards, key=lambda k: k.get('position', 1000), reverse=False)

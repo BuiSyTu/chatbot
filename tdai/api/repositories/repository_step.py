@@ -43,7 +43,7 @@ def create(params):
             'message': str(e)
         }
 
-def get_by_id(id):
+def get_by_id(id: int):
     try:
         step = Step.objects.get(id=id)
     except Exception as e:
@@ -80,7 +80,7 @@ def get_by_id(id):
         'message': None
     }
 
-def update(id, params):
+def update(id: int, params):
     try:
         step = Step.objects.get(id=id)
         step.scenario_id = params.get('scenario_id')
@@ -98,7 +98,7 @@ def update(id, params):
             'message': str(e)
         }
 
-def delete(id):
+def delete(id: int):
     try:
         step = Step.objects.get(id=id)
         step.delete()

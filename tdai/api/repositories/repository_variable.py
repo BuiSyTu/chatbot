@@ -26,7 +26,7 @@ def create(params):
             'message': str(e)
         }
 
-def get_by_id(id):
+def get_by_id(id: int):
     try:
         _variable = Variable.objects.get(id=id)
         result = model_to_dict(_variable)
@@ -43,7 +43,7 @@ def get_by_id(id):
             'result': None
         }
 
-def update(id, params):
+def update(id: int, params):
     try:
         variable = Variable.objects.get(id=id)
         variable.name = params.get('name')
@@ -60,7 +60,7 @@ def update(id, params):
             'message': str(e)
         }
 
-def delete(id):
+def delete(id: int):
     try:
         variable = Variable.objects.get(id=id)
         variable.delete()
@@ -75,7 +75,7 @@ def delete(id):
         }
 
 
-def init_require_variables(step_id, list_variable_id):
+def init_require_variables(step_id: int, list_variable_id: list):
     try:
         for variable_id in list_variable_id:
             RequireVariables.objects.create(
@@ -85,7 +85,7 @@ def init_require_variables(step_id, list_variable_id):
     except Exception as e:
         print(e)
 
-def remove_require_variables(step_id, list_variable_id):
+def remove_require_variables(step_id: int, list_variable_id: list):
     try:
         for variable_id in list_variable_id:
             RequireVariables.objects.filter(step_id=step_id).filter(variable_id=variable_id).delete()
