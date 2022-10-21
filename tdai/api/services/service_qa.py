@@ -10,7 +10,7 @@ from api.utils import handle_regex, json_try_loads
 from api.services import service_card, service_variable, service_voice
 
 
-def get_answer_cards(step_id, user_name, start_position=0, entities=[]):
+def get_answer_cards(step_id: int, user_name: str, start_position = 0, entities: list = []):
     cards = repository_card.get_by_step_id(step_id)
 
     indexes = service_card.find_indexes_formcard(cards)
@@ -20,7 +20,7 @@ def get_answer_cards(step_id, user_name, start_position=0, entities=[]):
 
 
 # Hàm trả lại giá trị cho client
-def get_answer(cards, step_id, user_name, entities = []):
+def get_answer(cards: list, step_id: int, user_name: str, entities: list = []):
     arr = []
 
     if len(cards) == 0:
@@ -46,7 +46,7 @@ def get_answer(cards, step_id, user_name, entities = []):
     return {'step_id': step_id, 'answers': arr}
 
 
-def get_requestion(card, user_name, entities):
+def get_requestion(card: dict, user_name: str, entities: list):
     arr = []
     step_id = card['step_id']
     if card['card_type'] == 'form':
@@ -66,7 +66,7 @@ def get_requestion(card, user_name, entities):
     arr = append_voice(arr)
     return {'step_id': step_id, 'answer': arr}
 
-def handle_card_form(card, user_name, entities):
+def handle_card_form(card: dict, user_name: str, entities: list):
     key, check = service_variable.check_variable_values(card, user_name, entities)
     # Nếu mà các biến chưa đủ giá trị
     if not check:
@@ -83,7 +83,7 @@ def handle_card_form(card, user_name, entities):
                 return new_config
     return None
 
-def handle_api(config, entities):
+def handle_api(config: dict, entities: list):
     __urls = config.get('url')
     __method = config.get('method').upper()
     __headers = config.get('headers')
@@ -142,7 +142,7 @@ def handle_api(config, entities):
         "buttons": __button
     }
 
-def handle_text(config, step_id, user_name, entities):
+def handle_text(config: dict, step_id: int, user_name: str, entities: list):
     __source = config.get('source')
     __variables = config.get('variables')
     __button = config.get('buttons', [])
@@ -168,7 +168,7 @@ def handle_text(config, step_id, user_name, entities):
         'buttons': __button
     }
 
-def classification_text(text):
+def classification_text(text: str):
     thres_scores = 0.05
     intent_model = intent_model_helper.get_latest_model()
     intents = intent_model.classes_
@@ -181,7 +181,7 @@ def classification_text(text):
         return None
     return intent
 
-def predict_entity(sentence):
+def predict_entity(sentence: str):
     rs_entity = ner_prediction.predict_entity(sentence)
     return rs_entity
 
@@ -192,7 +192,7 @@ def get_api_error_answer():
         "buttons": []
     }
 
-def append_voice(answers):
+def append_voice(answers: list):
     for answer in answers:
         src_voice = service_voice.get_voice(text=answer['text'])
         answer['srcVoice'] = src_voice['async'] if src_voice is not None else None

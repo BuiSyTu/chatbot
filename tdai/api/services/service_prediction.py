@@ -5,7 +5,7 @@ from chat_bot.models import IntentModel
 from tandan_nlp.classification import prediction as clf_prediction
 from tandan_nlp.ner import prediction_bert as ner_prediction
 
-def classification_text(text):
+def classification_text(text: str):
     thres_scores = 0.05
     intent_model = get_latest_model()
     intents = intent_model.classes_
@@ -18,7 +18,7 @@ def classification_text(text):
         return None
     return intent
 
-def predict_entity(sentence):
+def predict_entity(sentence: str):
     rs_entity = ner_prediction.predict_entity(sentence)
     return rs_entity
 

@@ -73,7 +73,7 @@ def validate_variables(sentence, variable_name):
     return True
 
 
-def check_variable_values(cards, user_name, entities=[]):
+def check_variable_values(cards, user_name, entities: list = []):
     step_id = cards.get('step_id')
 
     for entity in entities:

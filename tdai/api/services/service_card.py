@@ -3,7 +3,7 @@ from api.services import service_variable
 
 
 # Trả về vị trí bắt đầu và kết thúc của form_card
-def get_to_formcard(arr, indexes, user_name, start=-1, entities=[]):
+def get_to_formcard(arr: list, indexes: list, user_name: str, start=-1, entities=[]):
     end = len(arr)
     if len(indexes) == 0:
         return start, end
@@ -18,7 +18,7 @@ def get_to_formcard(arr, indexes, user_name, start=-1, entities=[]):
 
 
 # Trả về các index có card_type = form trong tập card truyền vào
-def find_indexes_formcard(cards):
+def find_indexes_formcard(cards: list):
     arr = []
     for i in range(len(cards)):
         if cards[i]['card_type'] == 'form':

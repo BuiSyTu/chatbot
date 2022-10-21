@@ -1,7 +1,7 @@
 from api.repositories import repository_chatvoice
 from api.services import service_fpt
 
-def get_voice(text):
+def get_voice(text: str):
     link_by_db = repository_chatvoice.get_link_by_text(text=text)
 
     if link_by_db != None:
