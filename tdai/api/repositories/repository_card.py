@@ -94,6 +94,7 @@ def get_by_id(id: int):
         result = model_to_dict(card)
         result['step_id'] = result['step']
         result['config'] = json.loads(result['config'])
+        result['step'] = model_to_dict(Step.objects.get(id=result['step_id'])) if result['step_id'] is not None else None
 
         return {
             "status": 200,
