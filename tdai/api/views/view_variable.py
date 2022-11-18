@@ -15,6 +15,8 @@ def variables(request):
         return JsonResponse(list(_variables), safe=False)
     elif request.method == 'POST':
         params = json.loads(request.body)
+        if 'bot_id' in request.session:
+            params['bot_id'] = request.session['bot_id']
         Variable.objects.create (
             bot_id=params['bot_id'] if 'bot_id' in params else None,
             name=params.get('name'),

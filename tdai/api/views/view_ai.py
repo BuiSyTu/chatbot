@@ -58,7 +58,7 @@ def training(request):
         print(entity_model)
         entity_model_dump = pickle.dumps(entity_model)
         EntityModel.objects.create(
-            bot_id=1,
+            bot_id=bot_id,
             data=entity_model_dump,
             created_time=timezone.now()
 

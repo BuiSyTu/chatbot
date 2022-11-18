@@ -22,6 +22,7 @@ def get_all(request):
 def create(params):
     try:
         Scenario.objects.create(
+            bot_id=params['bot_id'] if 'bot_id' in params else None,
             name=params.get("name"),
             position=params.get("position"),
             created_time=timezone.now

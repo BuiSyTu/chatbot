@@ -24,6 +24,7 @@ def get_all(request):
 def create(params):
     try:
         Intent.objects.create(
+            bot_id=params['bot_id'] if 'bot_id' in params else None,
             intent=params.get("intent"),
             description=params.get("description"),
             created_time=timezone.now()

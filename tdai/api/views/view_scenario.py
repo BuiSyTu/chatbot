@@ -14,6 +14,8 @@ def scenarios(request):
         return JsonResponse(result, safe=False)
     elif request.method == 'POST':
         params = json.loads(request.body)
+        if 'bot_id' in request.session:
+            params['bot_id'] = request.session['bot_id']
         status, message = itemgetter('status', 'message')(repository_scenario.create(params=params))
         return JsonResponse({'message': message}, safe=False, status=status)
 
