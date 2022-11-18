@@ -142,6 +142,7 @@ class Card(models.Model):
 
 
 class Variable(models.Model):
+    bot = models.ForeignKey(Bot, null=True, blank=True, on_delete=None)
     name = models.CharField(max_length=200, null=True, blank=True)
     variable_type = models.CharField(max_length=200, null=True, blank=True)
     created_time = models.DateTimeField(auto_now=True)

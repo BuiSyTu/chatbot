@@ -16,6 +16,7 @@ def variables(request):
     elif request.method == 'POST':
         params = json.loads(request.body)
         Variable.objects.create (
+            bot_id=params['bot_id'] if 'bot_id' in params else None,
             name=params.get('name'),
             variable_type=params.get('variable_type'),
             created_time=timezone.now
