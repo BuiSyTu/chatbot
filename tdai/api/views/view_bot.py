@@ -1,10 +1,10 @@
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.utils import timezone
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.forms import model_to_dict
 
-from chat_bot.models import Bot, Intent, Entity, Sentence, IntentModel
+from chat_bot.models import Bot, Intent, Entity, Sentence
 
 import json
 
@@ -19,15 +19,19 @@ def bots(request):
             user_id = request.session.get('user_id')
             _bots = _bots.filter(user_id__exact=user_id)
 
+        result = []
         for bot in _bots:
-            total_intent = len(Intent.objects.filter(bot_id = bot['id']))
-            total_entity = len(Entity.objects.filter(bot_id = bot['id']))
-            total_sentence = len(Sentence.objects.filter(bot_id = bot['id']))
-            bot['total_intent'] = total_intent
-            bot['total_entity'] = total_entity
-            bot['total_sentence'] = total_sentence
+            result_item = model_to_dict(bot)
 
-        return JsonResponse(list(_bots.values()), safe=False)
+            result_item['user_id'] = result_item['user']
+            del result_item['user']
+
+            result_item['total_intent'] = len(Intent.objects.filter(bot_id=bot.id))
+            result_item['total_entity'] = len(Entity.objects.filter(bot_id=bot.id))
+            result_item['total_sentence'] = len(Sentence.objects.filter(bot_id=bot.id))
+            result.append(result_item)
+
+        return JsonResponse(result, safe=False)
     elif request.method == 'POST':
         params = json.loads(request.body)
         Bot.objects.create(
