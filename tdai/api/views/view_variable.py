@@ -11,8 +11,20 @@ from chat_bot.models import Variable
 @csrf_exempt
 def variables(request):
     if request.method == 'GET':
-        _variables = Variable.objects.values()
-        return JsonResponse(list(_variables), safe=False)
+        bot_id = None
+        _variables = Variable.objects.all()
+
+        # handle bot_id in sesstion
+        if 'bot_id' in request.session:
+            bot_id = request.session['bot_id']
+            _variables = _variables.filter(bot_id__exact=bot_id)
+
+        # handle bot_id in request
+        bot_id = request.GET.get('bot_id', None)
+        if bot_id is not None and bot_id != '0':
+            _variables = _variables.filter(bot_id__exact=bot_id)
+
+        return JsonResponse(list(_variables.values()), safe=False)
     elif request.method == 'POST':
         params = json.loads(request.body)
         if 'bot_id' in request.session:

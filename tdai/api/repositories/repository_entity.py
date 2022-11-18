@@ -4,11 +4,18 @@ from django.forms import model_to_dict
 from chat_bot.models import Entity, KeyWord, Variable
 
 def get_all(request):
+    bot_id = None
+    include = None 
     _entities = Entity.objects.all()
 
-    # handle bot_id 
+    # handle bot_id in session
     if 'bot_id' in request.session:
         bot_id = request.session['bot_id']
+        _entities = _entities.filter(bot_id__exact=bot_id)
+
+    # handle bot_id in request
+    bot_id = request.GET.get('bot_id', None)
+    if bot_id is not None and bot_id != '0':
         _entities = _entities.filter(bot_id__exact=bot_id)
 
     result = list(_entities.values())

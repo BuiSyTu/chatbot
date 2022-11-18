@@ -4,11 +4,16 @@ from django.forms import model_to_dict
 from chat_bot.models import Dictionary
 
 def get_all(request):
+    bot_id = None
     _dictionaries = Dictionary.objects.all()
 
     # hanle bot_id
     if 'bot_id' in request.session:
         bot_id = request.session.get('bot_id')
+        _dictionaries = _dictionaries.filter(bot_id__exact=bot_id)
+
+    bot_id = request.GET.get('bot_id', None)
+    if bot_id is not None and bot_id != '0':
         _dictionaries = _dictionaries.filter(bot_id__exact=bot_id)
 
     return list(_dictionaries.values())
