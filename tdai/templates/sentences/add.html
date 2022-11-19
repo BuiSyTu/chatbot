@@ -97,41 +97,29 @@
             window.history.back();
         })
         .on('click', '[btn-add]', function(e) {
-            let sentence =  $(".sentence").val();
-            let intent_id = $(".intent_id").val();
+            const sentence =  $(".sentence").val();
+            const intent_id = $(".intent_id").val();
             if (!intent_id) {
                 toastr.info("Bạn chưa chọn ý định cho câu");
             } else {
-                let check = true;
-                let existed_sentences = {{ sentences | safe}};
-                for (let i=0; i<existed_sentences.length; i++) {
-                    if (sentence == existed_sentences[i].sentence) {
-                        check = false;
-                        break;
-                    }
-                }
-                if (check) {
-                    var bot_id = getBotId();
+                const bot_id = getBotId();
 
-                    $.ajax({
-                        url : `${location}/api/sentences`,
-                        type : "post",
-                        contentType: "application/json",
-                        data : JSON.stringify(
-                            {
-                                sentence,
-                                intent_id,
-                                ...(bot_id != 0 && {bot_id})
-                            }
-                        ),
-                        success : function (response) {
-                            toastr.success("Thêm thành công");
-                            emptyInputs();
+                $.ajax({
+                    url : `${location}/api/sentences`,
+                    type : "post",
+                    contentType: "application/json",
+                    data : JSON.stringify(
+                        {
+                            sentence,
+                            intent_id,
+                            ...(bot_id != 0 && {bot_id})
                         }
-                    });
-                } else {
-                    toastr.info("Đã tồn tại");
-                }
+                    ),
+                    success : function (response) {
+                        toastr.success("Thêm thành công");
+                        emptyInputs();
+                    }
+                });
             }
         })
 
