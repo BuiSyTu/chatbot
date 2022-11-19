@@ -89,13 +89,15 @@
                 }
             }
             if (check) {
+                var bot_id = getBotId();
                  $.ajax({
                     url: '/api/entities',
                     type: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify({
-                        entity:entity,
-                        description:description
+                        entity,
+                        description,
+                        ...(bot_id != 0 && {bot_id})
                     }),
                     success: function () {
                         toastr.success('Thêm thành công');

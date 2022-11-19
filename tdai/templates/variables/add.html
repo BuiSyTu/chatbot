@@ -83,13 +83,15 @@
         .on('click', '[btn-add]', function() {
             const name =  $('.name').val();
             const variable_type = $('.variable_type').val();
+            const bot_id = getBotId();
             $.ajax({
                 url : '/api/variables',
                 type : 'post',
                 contentType: 'application/json',
                 data : JSON.stringify({
                     name,
-                    variable_type
+                    variable_type,
+                    ...(bot_id != 0 && {bot_id})
                 }),
                 success : function (response) {
                     alert('Thêm thành công');

@@ -90,6 +90,7 @@
             }
 
             if (check) {
+                var bot_id = getBotId()
                 $.ajax({
                     url : `/api/intents`,
                     type : "post",
@@ -97,6 +98,7 @@
                     data : JSON.stringify({
                          intent,
                          description,
+                         ...(bot_id != 0 && {bot_id})
                     }),
                     success : function (response) {
                         toastr.success("Thêm thành công");

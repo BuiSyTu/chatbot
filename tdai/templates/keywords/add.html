@@ -102,6 +102,7 @@
                     }
                 }
                 if (check) {
+                    var bot_id = getBotId();
                     $.ajax({
                         url : `/api/keywords`,
                         type : 'post',
@@ -109,7 +110,8 @@
                         data : JSON.stringify({
                             keyword,
                             synonym,
-                            entity_id
+                            entity_id,
+                            ...(bot_id != 0 && {bot_id})
                         }),
                         success : function (response) {
                             alert("Thêm thành công");

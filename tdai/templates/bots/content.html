@@ -15,7 +15,7 @@
           <div class="kt-portlet__head-toolbar">
               <div class="kt-portlet__head-wrapper">
                   <div class="kt-portlet__head-actions">
-                      <a href="/add_intents/" class="btn btn-brand btn-elevate btn-icon-sm">
+                      <a href="/add_bot/" class="btn btn-brand btn-elevate btn-icon-sm">
                           <i class="la la-plus"></i>
                           Tạo bot mới
                       </a>
@@ -26,46 +26,48 @@
       <div class="kt-portlet__body">
         <div class="row">
           {% for bot in bots %}
-          <div class="card col-4 bot-card" data-id={{bot.id}}>
-            <div class="card-header bot-card-header">
-              <b>{{ bot.name }}</b>>
+          <div class="col-4">
+            <div class="card bot-card cursor-pointer" data-id={{bot.id}}>
+              <div class="card-header bot-card-header">
+                <b>{{ bot.name }}</b>>
+              </div>
+              <div class="card-body bot-card-body">
+                <div class="row">
+                  <div class="col-6">
+                    <p class="card-text bot-card-text">Ý định</p>
+                  </div>
+                  <div class="col-6">
+                    <p class="card-text bot-card-text">{{ bot.total_intent }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <p class="card-text bot-card-text">Loại thực thể</p>
+                  </div>
+                  <div class="col-6">
+                    <p class="card-text bot-card-text">{{ bot.total_entity }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <p class="card-text bot-card-text">Câu mẫu</p>
+                  </div>
+                  <div class="col-6">
+                    <p class="card-text bot-card-text">{{ bot.total_sentence }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <p class="card-text bot-card-text">Lần huấn luyện</p>
+                  </div>
+                  <div class="col-6">
+                    <p class="card-text bot-card-text">03/12/2020</p>
+                  </div>
+                </div>
+  
+              </div>          
+            
             </div>
-            <div class="card-body bot-card-body">
-              <div class="row">
-                <div class="col-6">
-                  <p class="card-text bot-card-text">Ý định</p>
-                </div>
-                <div class="col-6">
-                  <p class="card-text bot-card-text">{{ bot.total_intent }}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  <p class="card-text bot-card-text">Loại thực thể</p>
-                </div>
-                <div class="col-6">
-                  <p class="card-text bot-card-text">{{ bot.total_entity }}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  <p class="card-text bot-card-text">Câu mẫu</p>
-                </div>
-                <div class="col-6">
-                  <p class="card-text bot-card-text">{{ bot.total_sentence }}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  <p class="card-text bot-card-text">Lần huấn luyện</p>
-                </div>
-                <div class="col-6">
-                  <p class="card-text bot-card-text">03/12/2020</p>
-                </div>
-              </div>
-
-            </div>          
-          
           </div>
           {% endfor %}
         </div>

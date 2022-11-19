@@ -82,13 +82,15 @@
                     }
                 }
                 if (check) {
+                    var bot_id = getBotId();
                  $.ajax({
                     url: '/api/dictionaries',
                     type: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify({
                         word,
-                        synonym
+                        synonym,
+                        ...(bot_id != 0 && {bot_id})
                     }),
                     success: function () {
                         alert("Thêm thành công");

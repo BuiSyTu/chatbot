@@ -111,6 +111,8 @@
                     }
                 }
                 if (check) {
+                    var bot_id = getBotId();
+
                     $.ajax({
                         url : `${location}/api/sentences`,
                         type : "post",
@@ -118,7 +120,8 @@
                         data : JSON.stringify(
                             {
                                 sentence,
-                                intent_id
+                                intent_id,
+                                ...(bot_id != 0 && {bot_id})
                             }
                         ),
                         success : function (response) {
