@@ -39,7 +39,7 @@
         .ready(function() {
             $.ajax({
                 type: 'GET',
-                url: '/api/entities',
+                url: `/api/entities?bot_id=${getBotId()}`,
                 success: function(res) {
                     let options = [];
                     res.forEach((item, i) => options[i] = `<option value=${item.id}>${item.entity}</option>`);
@@ -49,7 +49,7 @@
 
             table = $('#keyword_table').DataTable({
                 ajax: {
-                    url: '/api/keywords',
+                    url: `/api/keywords?bot_id=${getBotId}`,
                     dataSrc: function(json) {
                         return json;
                     },

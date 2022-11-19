@@ -37,7 +37,7 @@
         $(document).ready(function() {
             table = $('#intent_table').DataTable({
                 ajax: {
-                    url: '/api/intents?include=count',
+                    url: `/api/intents?include=count&bot_id=${getBotId()}`,
                     dataSrc: function(json) {
                         return json;
                     },

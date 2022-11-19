@@ -38,7 +38,7 @@
         $(document).ready(function() {
             table = $('#variable_table').DataTable({
                 ajax: {
-                    url: '/api/variables',
+                    url: `/api/variables?bot_id=${getBotId()}`,
                     dataSrc: function(json) {
                         return json;
                     },

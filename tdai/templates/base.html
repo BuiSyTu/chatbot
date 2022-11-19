@@ -187,6 +187,15 @@
 					}
 				});
 			})
+
+			function setBotId(botId) {
+				if (!botId) window.sessionStorage.removeItem('bot_id')
+				window.sessionStorage.setItem('bot_id', botId)
+			}
+
+			function getBotId() {
+				return window.sessionStorage.getItem('bot_id') ? parseInt(window.sessionStorage.getItem('bot_id')) : 0
+			}
 		</script>
 		
 		<!-- END training_button -->

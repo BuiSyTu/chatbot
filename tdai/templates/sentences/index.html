@@ -62,7 +62,7 @@
         $(document).ready(function() {
             $.ajax({
                 type: 'GET',
-                url:'/api/intents',
+                url:`/api/intents?bot_id=${getBotId()}`,
                 success: function(res) {
                     res = res.sort((a, b) => a.intent.localeCompare(b.intent))
                     let options = [];
@@ -74,7 +74,7 @@
 
             table = $('#sentence_table').DataTable({
                 ajax: {
-                    url: '/api/sentences',
+                    url: `/api/sentences?bot_id=${getBotId()}`,
                     dataSrc: function(json) {
                         return json;
                     },

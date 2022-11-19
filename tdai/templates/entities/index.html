@@ -37,7 +37,7 @@
         $(document).ready(function() {
             table = $('#entity_table').DataTable({
                 ajax: {
-                    url: '/api/entities?include=count',
+                    url: `/api/entities?include=count&bot_id=${getBotId()}`,
                     dataSrc: function(json) {
                         return json;
                     },
@@ -99,7 +99,7 @@
                         type : 'delete',
                         success : function (response) {
                             toastr.success('Thành công');
-                            table.ajax.url(`/api/entities?include=count`).load();
+                            table.ajax.url(`/api/entities?include=count&bot_id=${getBotId()}`).load();
                         }
                     })
                 }   
