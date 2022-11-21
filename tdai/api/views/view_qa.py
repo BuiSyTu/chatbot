@@ -11,6 +11,7 @@ from api.services import service_variable, service_qa
 def QA(request):
     if request.method == "POST":
         params = json.loads(request.body)
+        bot_id = params.get('bot_id')
         text = params.get('sentence')
         step_id = params.get('step_id')
         user_name = params.get('user_name')
@@ -20,7 +21,7 @@ def QA(request):
 
         if not step_id:
             # Lấy ý định
-            intent_name = service_qa.classification_text(text)
+            intent_name = service_qa.classification_text(text, bot_id)
             if intent_name == None:
                 return JsonResponse({'answers': []}, safe=False)
             intent = list(Intent.objects.filter(intent=intent_name).values())[0]

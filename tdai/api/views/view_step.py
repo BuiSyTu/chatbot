@@ -39,6 +39,9 @@ def jumpto_step(request):
         params = json.loads(request.body)
         step_id = params.get('step_id')
         user_name = params.get('user_name')
+
+        # TODO: Xử lý khi step_id không thuộc bot_id 
+
         status = service_variable.init_history_variables(step_id, user_name)
         if status:
             answer_cards = service_qa.get_answer_cards(step_id,user_name)

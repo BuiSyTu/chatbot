@@ -168,9 +168,9 @@ def handle_text(config: dict, step_id: int, user_name: str, entities: list):
         'buttons': __button
     }
 
-def classification_text(text: str):
+def classification_text(text: str, bot_id):
     thres_scores = 0.05
-    intent_model = intent_model_helper.get_latest_model()
+    intent_model = intent_model_helper.get_lastest_model_by_bot_id(bot_id)
     intents = intent_model.classes_
     scores_int = clf_prediction.predict_proba_intent(text, intent_model)
     max_scores_int = np.max(scores_int)
