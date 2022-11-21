@@ -128,7 +128,7 @@
 		<script type="application/javascript">
 			$(".training_button").click(function (e) {
 				$.ajax({
-					url : `${location.origin}/training/`,
+					url : `${location.origin}/api/training?bot_id=${getBotId()}`,
 					type : 'get',
 					success : function (response) {
 						toastr.success('Thành công');

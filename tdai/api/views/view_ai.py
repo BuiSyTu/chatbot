@@ -16,13 +16,10 @@ from tandan_nlp.util.check_date import check_date
 
 @csrf_exempt
 def training(request):
-    if request.method == "POST":
-        # handle bot_id
-        if 'bot_id' in request.session:
-            bot_id = request.session['bot_id']
+    if request.method == "GET":
+        bot_id = request.GET.get('bot_id')
 
-        # training intent
-        sentences = Sentence.objects.all()
+        sentences = Sentence.objects.filter(bot_id=bot_id)
         sentences__sentence = []
         _intents = []
         for sentence in sentences:
@@ -37,31 +34,6 @@ def training(request):
             bot_id=bot_id,
             data=intent_model_dump,
             created_time=timezone.now()
-        )
-
-        # training entity
-        words = []
-        entities = []
-        keywords = KeyWord.objects.all()
-        for keyword in keywords:
-            entity = Entity.objects.get(id=keyword.entity_id)
-            words.append(keyword.keyword)
-            entities.append(entity.entity)
-        features = []
-        for sentence in sentences:
-            feature = []
-            word_features, pos_features, entity_features = reader.read_entities(sentence.sentence, words, entities)
-            [feature.append((word_features[i], pos_features[i], entity_features[i])) for i in range(len(word_features))]
-            features.append(feature)
-        x_train, y_train = ner_trainer.get_train_data(features)
-        entity_model = ner_trainer.training(x_train, y_train)
-        print(entity_model)
-        entity_model_dump = pickle.dumps(entity_model)
-        EntityModel.objects.create(
-            bot_id=bot_id,
-            data=entity_model_dump,
-            created_time=timezone.now()
-
         )
         return JsonResponse({"status": "200"}, safe=False)
 

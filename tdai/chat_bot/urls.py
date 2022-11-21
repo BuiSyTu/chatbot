@@ -39,8 +39,7 @@ urlpatterns = [
     path('steps/<id>', view_step.step_detail),
     re_path(r'^add_steps/?$', view_step.add_steps),
     path('reply_steps/', view_step. reply_step),
-    # training and test
-    re_path(r'^training/?$', view_ai.training),
+    # test
     re_path(r'^test_nlp/?$', view_ai.test_nlp),
     # reply
     path('reply/', view_reply.reply),

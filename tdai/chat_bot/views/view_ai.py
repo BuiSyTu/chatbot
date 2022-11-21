@@ -11,31 +11,6 @@ from chat_bot.utils import intent_model_helper
 from tandan_nlp.classification import trainer as clf_trainer, prediction as clf_prediction
 from tandan_nlp.ner import prediction_bert as ner_prediction
 
-
-@csrf_exempt
-def training(request):
-    if request.method == "GET":
-        # training intent
-        sentences = Sentence.objects.all()
-        sentences__sentence = []
-        _intents = []
-        for sentence in sentences:
-            intent_id = sentence.intent_id
-            intent = Intent.objects.get(id=intent_id)
-            _intents.append(intent.intent)
-            sentences__sentence.append(sentence.sentence)
-        x_train, y_train = clf_trainer.get_train_data(sentences__sentence, _intents)
-        intent_model = clf_trainer.training(clf_trainer.get_model(classifier=LogisticRegression()), x_train, y_train)
-        intent_model_dump = pickle.dumps(intent_model)
-        IntentModel.objects.create(
-            bot_id=3,
-            data=intent_model_dump,
-            created_time=timezone.now()
-        )
-
-        return JsonResponse({"type": "POST"}, safe=False)
-
-
 @csrf_exempt
 def test_nlp(request):
     if request.method == 'GET':
