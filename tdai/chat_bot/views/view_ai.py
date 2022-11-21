@@ -15,32 +15,6 @@ from tandan_nlp.ner import prediction_bert as ner_prediction
 def test_nlp(request):
     if request.method == 'GET':
         return render(request, 'test_nlp/index.html')
-    if request.method == 'POST':
-        sentence = request.POST.get('sentence')
-        text = sentence.strip()
-        # predict intent
-        intent_model = intent_model_helper.get_latest_model()
-        reliability = clf_prediction.predict_proba_intent(text, intent_model)
-        _intents = intent_model.classes_
-        rs_intent = []
-        for i, intent in enumerate(_intents):
-            rs_intent.append({
-                'intent': intent,
-                'reliability': round(reliability[i] * 100, 2)
-            })
-        rs_intent = sorted(rs_intent, key=lambda x: x.get('reliability'), reverse=True)
-        if len(rs_intent) > 4:
-            rs_intent = rs_intent[:4]
-            
-        rs_entity = ner_prediction.predict_entity(text)
-
-        data = {
-            'status': 200,
-            'sentence': text,
-            'intents': rs_intent,
-            'entities': rs_entity
-        }
-        return render(request, 'test_nlp/index.html', data)
 
 
 @csrf_exempt

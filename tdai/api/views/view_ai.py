@@ -4,14 +4,12 @@ import pickle
 from django.http import JsonResponse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from pyvi.ViTokenizer import ViTokenizer
 from sklearn.linear_model import LogisticRegression
 
-from chat_bot.models import Sentence, Intent, Entity, KeyWord, IntentModel, EntityModel
-from chat_bot.utils import intent_model_helper, entity_model_helper
+from chat_bot.models import Sentence, Intent, IntentModel
+from chat_bot.utils import intent_model_helper
 from tandan_nlp.classification import trainer as clf_trainer, prediction as clf_prediction
-from tandan_nlp.ner import reader, trainer as ner_trainer, prediction_bert as ner_prediction
-from tandan_nlp.util.check_date import check_date
+from tandan_nlp.ner import prediction_bert as ner_prediction
 
 
 @csrf_exempt
@@ -43,8 +41,9 @@ def test_nlp(request):
     if request.method == 'POST':
         params = json.loads(request.body)
         sentence = params.get('sentence')
+        bot_id = params.get('bot_id')
         # predict intent
-        intent_model = intent_model_helper.get_latest_model()
+        intent_model = intent_model_helper.get_lastest_model_by_bot_id(bot_id)
         reliability = clf_prediction.predict_proba_intent(sentence, intent_model)
         _intents = intent_model.classes_
         rs_intent = []
