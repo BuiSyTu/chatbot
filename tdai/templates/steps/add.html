@@ -104,7 +104,8 @@
                     data : JSON.stringify({
                         name,
                         position,
-                        scenario_id
+                        scenario_id,
+                        bot_id: getBotId(),
                     }),
                     success : function (response) {
                         toastr.success("Thêm thành công");

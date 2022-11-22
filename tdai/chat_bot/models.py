@@ -124,6 +124,7 @@ class Scenario(models.Model):
 
 
 class Step(models.Model):
+    bot = models.ForeignKey(Bot, null=True, blank=True, on_delete=None)
     scenario = models.ForeignKey(Scenario, null=True, blank=True, on_delete=None)
     name = models.CharField(max_length=200, null=True, blank=True)
     position = models.IntegerField(null=True, blank=True)
@@ -132,6 +133,7 @@ class Step(models.Model):
 
 
 class Card(models.Model):
+    bot = models.ForeignKey(Bot, null=True, blank=True, on_delete=None)
     step = models.ForeignKey(Step, null=True, blank=True, on_delete=None)
     name = models.CharField(max_length=200, null=True, blank=True)
     card_type = models.CharField(max_length=200, null=True, blank=True)

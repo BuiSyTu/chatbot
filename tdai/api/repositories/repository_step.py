@@ -6,17 +6,20 @@ from django.forms import model_to_dict
 from chat_bot.models import Step, Scenario, Card, Variable
 
 def get_all(request):
+    bot_id = None
+    scenario_id = None
     _steps = Step.objects.all()
 
     # handle bot_id
-    bot_id = None
     if 'bot_id' in request.session:
         bot_id = request.session['bot_id']
         _steps = _steps.filter(bot_id__exact=bot_id)
 
+    bot_id = request.GET.get()
+
     # handle scenario_id
     scenario_id = request.GET.get('scenario_id', None)
-    if scenario_id is not None:
+    if scenario_id is not None and scenario_id != '0':
         _steps = _steps.filter(scenario_id__exact=scenario_id)
 
     result = list(_steps.values())
@@ -28,6 +31,7 @@ def get_all(request):
 def create(params):
     try:
         Step.objects.create(
+            bot_id=params['bot_id'] if 'bot_id' in params else None,
             scenario_id=params.get('scenario_id'),
             name=params.get('name'),
             position=params.get('position'),

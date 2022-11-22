@@ -47,6 +47,7 @@ def create(params):
 
     try:
         Card.objects.create(
+            bot_id=params['bot_id'] if 'bot_id' in params else None,
             step_id=params.get('step_id'),
             name=params.get('name'),
             card_type=params.get('card_type'),
