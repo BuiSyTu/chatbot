@@ -47,7 +47,7 @@
 
             table = $('#card_table').DataTable({
                 ajax: {
-                    url: '/api/cards',
+                    url: `/api/cards?bot_id=${getBotId()}`,
                     dataSrc: function(json) {
                         return json;
                     },
@@ -150,12 +150,12 @@
         .on('change', '[name="step_id"]', function() {
             const step_id = $(this).val();
             const card_type = $('.card_type').val();
-            table.ajax.url(`/api/cards?step_id=${step_id}&card_type=${card_type}`).load();
+            table.ajax.url(`/api/cards?step_id=${step_id}&card_type=${card_type}&bot_id=${getBotId()}`).load();
         })
         .on('change', '[name="card_type"]', function() {
             const step_id = $('.step_id').val();
             const card_type = $(this).val();
-            table.ajax.url(`/api/cards?step_id=${step_id}&card_type=${card_type}`).load();
+            table.ajax.url(`/api/cards?step_id=${step_id}&card_type=${card_type}&bot_id=${getBotId()}`).load();
         })
     </script>
 {% endblock %}

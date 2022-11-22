@@ -47,7 +47,7 @@
 
             table = $('#step_table').DataTable({
                 ajax: {
-                    url: '/api/steps',
+                    url: `/api/steps?bot_id=${getBotId()}`,
                     dataSrc: function(json) {
                         return json;
                     },
