@@ -73,60 +73,60 @@
 {% endblock %}
 {% block script %}
     <script type="application/javascript">
-        $(document).ready(function() {
-            $.ajax({
-                type: 'GET',
-                url:'/api/intents',
-                success: function(res) {
-                    res = res.sort((a, b) => a.intent.localeCompare(b.intent))
-                    let options = [];
-                    res.forEach((item, i) => options[i] = `<option value=${item.id}>${item.intent}</option>`);
-                    $('[name="intent_id"]').append(options.join(''));
+        $(document).ready(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: `/api/intents?bot_id=${getBotId()}`,
+                    success: function (res) {
+                        res = res.sort((a, b) => a.intent.localeCompare(b.intent))
+                        let options = [];
+                        res.forEach((item, i) => options[i] = `<option value=${item.id}>${item.intent}</option>`);
+                        $('[name="intent_id"]').append(options.join(''));
+                    }
+                })
+            })
+
+            $('#add_sentence_form').on('keyup keypress', function (e) {
+                let keyCode = e.keyCode || e.which;
+                if (keyCode === 13) {
+                    e.preventDefault();
+                    return false;
                 }
             })
-        })
+                .on('click', '[btn-back]', function (e) {
+                    window.history.back();
+                })
+                .on('click', '[btn-add]', function (e) {
+                    const sentence = $(".sentence").val();
+                    const intent_id = $(".intent_id").val();
+                    if (!intent_id) {
+                        toastr.info("Bạn chưa chọn ý định cho câu");
+                    } else {
+                        const bot_id = getBotId();
 
-        $('#add_sentence_form').on('keyup keypress', function(e) {
-          let keyCode = e.keyCode || e.which;
-          if (keyCode === 13) {
-            e.preventDefault();
-            return false;
-          }
-        })
-        .on('click', '[btn-back]', function(e) {
-            window.history.back();
-        })
-        .on('click', '[btn-add]', function(e) {
-            const sentence =  $(".sentence").val();
-            const intent_id = $(".intent_id").val();
-            if (!intent_id) {
-                toastr.info("Bạn chưa chọn ý định cho câu");
-            } else {
-                const bot_id = getBotId();
-
-                $.ajax({
-                    url : `${location}/api/sentences`,
-                    type : "post",
-                    contentType: "application/json",
-                    data : JSON.stringify(
-                        {
-                            sentence,
-                            intent_id,
-                            ...(bot_id != 0 && {bot_id})
-                        }
-                    ),
-                    success : function (response) {
-                        toastr.success("Thêm thành công");
-                        emptyInputs();
+                        $.ajax({
+                            url: `${location}/api/sentences`,
+                            type: "post",
+                            contentType: "application/json",
+                            data: JSON.stringify(
+                                {
+                                    sentence,
+                                    intent_id,
+                                    ...(bot_id != 0 && { bot_id })
+                                }
+                            ),
+                            success: function (response) {
+                                toastr.success("Thêm thành công");
+                                emptyInputs();
+                            }
+                        });
                     }
-                });
-            }
-        })
+                })
 
-    function emptyInputs() {
-        $(".sentence").val('');
-        // $(".intent_id").val();
-    }
+            function emptyInputs() {
+                $(".sentence").val('');
+                // $(".intent_id").val();
+            }
     </script>
 {% endblock %}
 
