@@ -33,11 +33,11 @@
                                 <form id="add_scenario_form">
                                     {% csrf_token %}
                                     <div class="form-group">
-                                        <label for="">Tên</label>
+                                        <label>Tên</label>
                                         <input type="text" class="form-control name" name="name" placeholder="Nhập tên" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="">Thứ tự</label>
+                                        <label>Thứ tự</label>
                                         <input type="number" class="form-control position" name="position" required>
                                     </div>
                                     <div class="kt-portlet__foot">
@@ -85,7 +85,8 @@
                 contentType: 'application/json',
                 data: JSON.stringify({
                     name,
-                    position
+                    position,
+                    bot_id: getBotId(),
                 }),
                 success: function () {
                     toastr.success('Thêm thành công');
