@@ -37,7 +37,7 @@
         $(document).ready(function() {
             table = $('#scenario_table').DataTable({
                 ajax: {
-                    url: '/api/scenarios',
+                    url: `/api/scenarios?bot_id=${getBotId()}`,
                     dataSrc: function(json) {
                         return json;
                     },
@@ -102,7 +102,7 @@
                         type : 'delete',
                         success : function (response) {
                             toastr.success('Thành công');
-                            table.ajax.url(`/api/scenarios?include=count`).load();
+                            table.ajax.url(`/api/scenarios?include=count&bot_id=${getBotId()}`).load();
                         }
                     })
                 }   
