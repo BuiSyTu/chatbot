@@ -62,6 +62,8 @@
     {% endblock %}
     {% block script %}
     <script>
+        var table;
+
         $('.btn-predict').on('click', function () {
             $.ajax({
                 url: '/api/test_nlp',
@@ -75,6 +77,12 @@
                         <p>${ entity.keyword } : ${ entity.entity }</p>
                     `);
                     $('entities').append(entities);
+
+                    if ($.fn.DataTable.isDataTable('#predict-table')) {
+                        $('#predict-table').DataTable().destroy();
+                    }
+
+                    $('#predict-table tbody').empty();
 
                     $('#predict-table').DataTable({
                         data: res?.intents,
