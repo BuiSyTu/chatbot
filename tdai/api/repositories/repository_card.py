@@ -9,6 +9,11 @@ from api.repositories import repository_variable
 def get_all(request):
     _cards = Card.objects.order_by('position')
 
+    # handle bot_id
+    bot_id = request.GET.get('bot_id', None)
+    if bot_id is not None and bot_id != '0':
+        _cards = _cards.filter(bot_id=bot_id)
+
     # handle step_id
     step_id = request.GET.get('step_id', None)
     if step_id is not None and step_id != '0':

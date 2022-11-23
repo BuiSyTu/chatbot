@@ -15,7 +15,10 @@ def get_all(request):
         bot_id = request.session['bot_id']
         _steps = _steps.filter(bot_id__exact=bot_id)
 
-    bot_id = request.GET.get()
+    bot_id = request.GET.get('bot_id', None)
+    if bot_id is not None and bot_id != '0':
+        _steps = _steps.filter(bot_id__exact=bot_id)
+
 
     # handle scenario_id
     scenario_id = request.GET.get('scenario_id', None)
